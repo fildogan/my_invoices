@@ -10,10 +10,37 @@ class AddInvoicePage extends StatefulWidget {
 class _AddInvoicePageState extends State<AddInvoicePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         title: const Text('Add invoice'),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.save,
+              ))
+        ],
       ),
-    );
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Text('menu')),
+            ListTile(
+              title: Text('Add invoice'),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: Text('List of invoices'),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }

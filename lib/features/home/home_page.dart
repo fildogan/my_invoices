@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
+  // ignore: unused_element
   void _incrementCounter() {
     setState(() {
       _counter++;
