@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -39,7 +40,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddInvoicePage())),
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ));
