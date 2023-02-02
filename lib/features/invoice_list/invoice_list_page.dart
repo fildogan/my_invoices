@@ -8,10 +8,29 @@ class InvoiceListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Invoices'),
+        ),
         drawer: const MenuDrawer(),
         body: ListView(
-          children: const [],
+          children: [
+            ListTile(
+              title: const Text('Invoice XYZ10020'),
+              subtitle: const Text('Contrahent: Google LLC'),
+              leading: const Icon(
+                Icons.description,
+                size: 40,
+              ),
+              trailing: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('NET: 1000 PLN'),
+                  Text('VAT: 23%'),
+                  Text('GROSS: 1230 PLN'),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
