@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
+import 'package:moje_faktury/features/auth/user_profile.dart';
 import 'package:moje_faktury/features/invoice_list/invoice_list_page.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -45,6 +46,13 @@ class MenuDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const InvoiceListPage()));
+            },
+          ),
+          ListTile(
+            title: const Text('Account'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserProfile()));
             },
           )
         ],
