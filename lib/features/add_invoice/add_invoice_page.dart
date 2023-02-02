@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
 
 class AddInvoicePage extends StatefulWidget {
   const AddInvoicePage({super.key});
@@ -22,41 +23,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
               ))
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 80,
-              child: DrawerHeader(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    children: [
-                      InkWell(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: const Icon(Icons.arrow_back)),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text('menu'),
-                    ],
-                  )),
-            ),
-            ListTile(
-              title: const Text('Add invoice'),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: const Text('List of invoices'),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ),
-      ),
+      drawer: const MenuDrawer(),
       body: ListView(
         children: [
           TextFormField(
