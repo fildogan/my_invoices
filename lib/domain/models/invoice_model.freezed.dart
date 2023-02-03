@@ -21,6 +21,7 @@ mixin _$InvoiceModel {
   String get contrahent => throw _privateConstructorUsedError;
   double get net => throw _privateConstructorUsedError;
   int get vat => throw _privateConstructorUsedError;
+  String get gross => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InvoiceModelCopyWith<InvoiceModel> get copyWith =>
@@ -33,7 +34,13 @@ abstract class $InvoiceModelCopyWith<$Res> {
           InvoiceModel value, $Res Function(InvoiceModel) then) =
       _$InvoiceModelCopyWithImpl<$Res, InvoiceModel>;
   @useResult
-  $Res call({String id, String title, String contrahent, double net, int vat});
+  $Res call(
+      {String id,
+      String title,
+      String contrahent,
+      double net,
+      int vat,
+      String gross});
 }
 
 /// @nodoc
@@ -54,6 +61,7 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
     Object? contrahent = null,
     Object? net = null,
     Object? vat = null,
+    Object? gross = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,6 +84,10 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
           ? _value.vat
           : vat // ignore: cast_nullable_to_non_nullable
               as int,
+      gross: null == gross
+          ? _value.gross
+          : gross // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -88,7 +100,13 @@ abstract class _$$_InvoiceModelCopyWith<$Res>
       __$$_InvoiceModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, String contrahent, double net, int vat});
+  $Res call(
+      {String id,
+      String title,
+      String contrahent,
+      double net,
+      int vat,
+      String gross});
 }
 
 /// @nodoc
@@ -107,6 +125,7 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
     Object? contrahent = null,
     Object? net = null,
     Object? vat = null,
+    Object? gross = null,
   }) {
     return _then(_$_InvoiceModel(
       id: null == id
@@ -129,6 +148,10 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
           ? _value.vat
           : vat // ignore: cast_nullable_to_non_nullable
               as int,
+      gross: null == gross
+          ? _value.gross
+          : gross // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -141,7 +164,8 @@ class _$_InvoiceModel extends _InvoiceModel {
       required this.title,
       required this.contrahent,
       required this.net,
-      required this.vat})
+      required this.vat,
+      required this.gross})
       : super._();
 
   @override
@@ -154,10 +178,12 @@ class _$_InvoiceModel extends _InvoiceModel {
   final double net;
   @override
   final int vat;
+  @override
+  final String gross;
 
   @override
   String toString() {
-    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat)';
+    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat, gross: $gross)';
   }
 
   @override
@@ -170,11 +196,13 @@ class _$_InvoiceModel extends _InvoiceModel {
             (identical(other.contrahent, contrahent) ||
                 other.contrahent == contrahent) &&
             (identical(other.net, net) || other.net == net) &&
-            (identical(other.vat, vat) || other.vat == vat));
+            (identical(other.vat, vat) || other.vat == vat) &&
+            (identical(other.gross, gross) || other.gross == gross));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, contrahent, net, vat);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, contrahent, net, vat, gross);
 
   @JsonKey(ignore: true)
   @override
@@ -189,7 +217,8 @@ abstract class _InvoiceModel extends InvoiceModel {
       required final String title,
       required final String contrahent,
       required final double net,
-      required final int vat}) = _$_InvoiceModel;
+      required final int vat,
+      required final String gross}) = _$_InvoiceModel;
   const _InvoiceModel._() : super._();
 
   @override
@@ -202,6 +231,8 @@ abstract class _InvoiceModel extends InvoiceModel {
   double get net;
   @override
   int get vat;
+  @override
+  String get gross;
   @override
   @JsonKey(ignore: true)
   _$$_InvoiceModelCopyWith<_$_InvoiceModel> get copyWith =>

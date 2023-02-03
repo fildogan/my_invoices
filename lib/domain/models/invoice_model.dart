@@ -12,6 +12,7 @@ class InvoiceModel with _$InvoiceModel {
     required String contrahent,
     required double net,
     required int vat,
+    required String gross,
   }) = _InvoiceModel;
   const InvoiceModel._();
 }

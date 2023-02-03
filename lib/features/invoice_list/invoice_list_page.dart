@@ -46,6 +46,7 @@ class InvoiceListPage extends StatelessWidget {
                     vat: doc.data().toString().contains('vat')
                         ? int.parse(doc['vat'].toString())
                         : 0,
+                    gross: doc['gross'].toString(),
                   );
                 },
               ).toList();
@@ -92,9 +93,9 @@ class InvoiceTile extends StatelessWidget {
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('NET: ${invoiceModel.net} PLN'),
+            Text('NET: ${invoiceModel.net.toStringAsFixed(2)} PLN'),
             Text('VAT: ${invoiceModel.vat}%'),
-            const Text('GROSS: 1230 PLN'),
+            Text('GROSS: ${invoiceModel.gross} PLN'),
           ],
         ),
       ),

@@ -39,6 +39,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   'contrahent': contrahent,
                   'net': net,
                   'vat': vat,
+                  'gross': gross.toStringAsFixed(2)
                 });
               },
               icon: const Icon(
