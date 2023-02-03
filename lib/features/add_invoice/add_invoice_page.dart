@@ -24,6 +24,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   double gross = 0;
   Uint8List? fileBytes;
   String fileName = '';
+  String invoiceId = '';
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
 
@@ -48,10 +49,15 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   'contrahent': contrahent,
                   'net': net,
                   'vat': vat,
-                  'gross': gross.toStringAsFixed(2)
+                  'gross': gross.toStringAsFixed(2),
+                  'file_name': fileName
+                }).then((value) {
+                  setState(() {
+                    invoiceId = value.id;
+                  });
                 });
                 await FirebaseStorage.instance
-                    .ref('uploads/$userID/$fileName')
+                    .ref('invoices/$userID/$invoiceId/$fileName')
                     .putData(fileBytes!);
               },
               icon: const Icon(
@@ -133,15 +139,6 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   contentPadding: EdgeInsets.all(10),
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final userID = FirebaseAuth.instance.currentUser?.uid;
-                await FirebaseStorage.instance
-                    .ref('invoices/$userID/$fileName')
-                    .putData(fileBytes!);
-              },
-              child: const Text('Add file test'),
             ),
           ],
         ),
