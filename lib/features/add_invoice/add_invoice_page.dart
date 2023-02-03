@@ -9,6 +9,13 @@ class AddInvoicePage extends StatefulWidget {
 }
 
 class _AddInvoicePageState extends State<AddInvoicePage> {
+  String title = '';
+  String contrahent = '';
+  double net = 0;
+  int vat = 0;
+  double gross = 0;
+  TextEditingController grossController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,26 +38,51 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 labelText: 'Invoice no.',
                 contentPadding: EdgeInsets.all(10),
               ),
+              onChanged: (newValue) {
+                setState(() {
+                  title = newValue;
+                });
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Contrahent',
                 contentPadding: EdgeInsets.all(10),
               ),
+              onChanged: (newValue) {
+                setState(() {
+                  contrahent = newValue;
+                });
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Net amount',
                 contentPadding: EdgeInsets.all(10),
               ),
+              onChanged: (newValue) {
+                setState(() async {
+                  net = double.parse(newValue);
+                  calculateGross();
+                });
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'VAT rate',
                 contentPadding: EdgeInsets.all(10),
               ),
+              onChanged: (newValue) {
+                setState(() async {
+                  vat = int.parse(newValue);
+                  calculateGross();
+                });
+              },
             ),
             TextFormField(
+              enabled: false,
+              controller: grossController,
+              // initialValue: gross.toStringAsFixed(2),
               decoration: const InputDecoration(
                 labelText: 'Gross amount',
                 contentPadding: EdgeInsets.all(10),
@@ -66,5 +98,10 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
         ),
       ),
     );
+  }
+
+  void calculateGross() {
+    gross = net + (net * (vat / 100));
+    grossController.text = gross.toStringAsFixed(2);
   }
 }
