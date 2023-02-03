@@ -17,4 +17,15 @@ class Config {
         return false;
     }
   }
+
+  static String get versionMessage {
+    switch (appFlavor) {
+      case Flavor.development:
+        return 'Developers version';
+      case Flavor.staging:
+        return 'Test version';
+      case Flavor.production:
+        return '';
+    }
+  }
 }
