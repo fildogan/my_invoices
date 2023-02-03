@@ -85,20 +85,65 @@ class InvoiceTile extends StatelessWidget {
                       invoiceModel: invoiceModel,
                     )));
       },
-      child: ListTile(
-        title: Text(invoiceModel.title),
-        subtitle: Text(invoiceModel.contrahent),
-        leading: const Icon(
-          Icons.description,
-          size: 40,
+      child: Dismissible(
+        key: ValueKey(invoiceModel.id),
+        onDismissed: (direction) async {
+          final userID = FirebaseAuth.instance.currentUser?.uid;
+          if (userID == null) {
+            throw Exception('User is not logged in');
+          }
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userID)
+              .collection('invoices')
+              .doc(invoiceModel.id)
+              .delete();
+        },
+        direction: DismissDirection.endToStart,
+        confirmDismiss: (direction) {
+          return showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Delete invoice ${invoiceModel.title}?'),
+                content: const Text(
+                  'This action is irreversible.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Yes'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('No'),
+                  )
+                ],
+              );
+            },
+          );
+        },
+        background: Container(
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20),
+          color: Colors.red,
+          child: const Icon(Icons.delete, color: Colors.white),
         ),
-        trailing: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('NET: ${invoiceModel.net.toStringAsFixed(2)} PLN'),
-            Text('VAT: ${invoiceModel.vat}%'),
-            Text('GROSS: ${invoiceModel.gross} PLN'),
-          ],
+        child: ListTile(
+          title: Text(invoiceModel.title),
+          subtitle: Text(invoiceModel.contrahent),
+          leading: const Icon(
+            Icons.description,
+            size: 40,
+          ),
+          trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('NET: ${invoiceModel.net.toStringAsFixed(2)} PLN'),
+              Text('VAT: ${invoiceModel.vat}%'),
+              Text('GROSS: ${invoiceModel.gross} PLN'),
+            ],
+          ),
         ),
       ),
     );
