@@ -54,7 +54,7 @@ class InvoiceListPage extends StatelessWidget {
                 children: [
                   for (final invoice in invoices) ...[
                     InvoiceTile(
-                      title: invoice.title,
+                      invoiceModel: invoice,
                     )
                   ]
                 ],
@@ -66,9 +66,12 @@ class InvoiceListPage extends StatelessWidget {
 }
 
 class InvoiceTile extends StatelessWidget {
-  const InvoiceTile({super.key, required this.title});
+  const InvoiceTile({
+    super.key,
+    required this.invoiceModel,
+  });
 
-  final String title;
+  final InvoiceModel invoiceModel;
 
   @override
   Widget build(BuildContext context) {
@@ -80,18 +83,18 @@ class InvoiceTile extends StatelessWidget {
                 builder: (context) => const InvoiceDetailsPage()));
       },
       child: ListTile(
-        title: Text(title),
-        subtitle: const Text('Contrahent: Google LLC'),
+        title: Text(invoiceModel.title),
+        subtitle: Text(invoiceModel.contrahent),
         leading: const Icon(
           Icons.description,
           size: 40,
         ),
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('NET: 1000 PLN'),
-            Text('VAT: 23%'),
-            Text('GROSS: 1230 PLN'),
+          children: [
+            Text('NET: ${invoiceModel.net} PLN'),
+            Text('VAT: ${invoiceModel.vat}%'),
+            const Text('GROSS: 1230 PLN'),
           ],
         ),
       ),
