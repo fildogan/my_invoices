@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/domain/models/invoice_model.dart';
 import 'package:moje_faktury/features/invoice_details/invoice_details_page.dart';
 import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
 
@@ -33,12 +34,27 @@ class InvoiceListPage extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               }
-              final invoices = snapshot.data!.docs;
+              final invoices = snapshot.data!.docs.map(
+                (doc) {
+                  return InvoiceModel(
+                    id: doc.id,
+                    title: doc['title'].toString(),
+                    contrahent: doc['contrahent'].toString(),
+                    net: doc.data().toString().contains('net')
+                        ? double.parse(doc['net'].toString())
+                        : 0.00,
+                    vat: doc.data().toString().contains('vat')
+                        ? int.parse(doc['vat'].toString())
+                        : 0,
+                  );
+                },
+              ).toList();
+
               return ListView(
                 children: [
                   for (final invoice in invoices) ...[
                     InvoiceTile(
-                      title: invoice['title'].toString(),
+                      title: invoice.title,
                     )
                   ]
                 ],
