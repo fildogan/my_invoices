@@ -10,59 +10,71 @@ class InvoiceDetailsPage extends StatefulWidget {
 class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Invoice XYZ0020'),
         actions: [
           IconButton(
               onPressed: () {},
               icon: const Icon(
-                Icons.save,
+                Icons.edit_document,
               ))
         ],
       ),
-      body: ListView(
-        children: [
-          TextFormField(
-            enabled: false,
-            decoration: const InputDecoration(
-              labelText: 'Invoice no.',
-              contentPadding: EdgeInsets.all(10),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            TextFormField(
+              initialValue: 'Invoice XYZ0020',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Invoice no.',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Contrahent',
-              contentPadding: EdgeInsets.all(10),
+            TextFormField(
+              initialValue: 'Contrahent: Google LLC',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Contrahent',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Net amount',
-              contentPadding: EdgeInsets.all(10),
+            TextFormField(
+              initialValue: '1000 PLN',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Net amount',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'VAT rate',
-              contentPadding: EdgeInsets.all(10),
+            TextFormField(
+              initialValue: '23%',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'VAT rate',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Gross amount',
-              contentPadding: EdgeInsets.all(10),
+            TextFormField(
+              initialValue: '1230 PLN',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Gross amount',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Attachment',
-              contentPadding: EdgeInsets.all(10),
+            TextFormField(
+              initialValue: 'InvoiceXYZ0020.pdf',
+              enabled: false,
+              decoration: const InputDecoration(
+                labelText: 'Attachment',
+                contentPadding: EdgeInsets.all(10),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
