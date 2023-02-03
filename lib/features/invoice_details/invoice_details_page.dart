@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/domain/models/invoice_model.dart';
 import 'package:moje_faktury/features/edit_invoice_page/edit_invoice_page.dart';
 
 class InvoiceDetailsPage extends StatefulWidget {
-  const InvoiceDetailsPage({super.key});
+  const InvoiceDetailsPage({
+    super.key,
+    required this.invoiceModel,
+  });
+
+  final InvoiceModel invoiceModel;
 
   @override
   State<InvoiceDetailsPage> createState() => _InvoiceDetailsPageState();
@@ -13,7 +19,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Invoice XYZ0020'),
+        title: Text(widget.invoiceModel.title),
         actions: [
           IconButton(
               onPressed: () {
@@ -31,7 +37,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
         child: ListView(
           children: [
             TextFormField(
-              initialValue: 'Invoice XYZ0020',
+              initialValue: widget.invoiceModel.title,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Invoice no.',
@@ -39,7 +45,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: 'Contrahent: Google LLC',
+              initialValue: widget.invoiceModel.contrahent,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Contrahent',
@@ -47,7 +53,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '1000 PLN',
+              initialValue: '${widget.invoiceModel.net} PLN',
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Net amount',
@@ -55,7 +61,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '23%',
+              initialValue: '${widget.invoiceModel.vat}%',
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'VAT rate',
@@ -63,7 +69,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '1230 PLN',
+              initialValue: '${widget.invoiceModel.gross} PLN',
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Gross amount',

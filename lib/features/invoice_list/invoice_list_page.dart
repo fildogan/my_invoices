@@ -81,7 +81,9 @@ class InvoiceTile extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const InvoiceDetailsPage()));
+                builder: (context) => InvoiceDetailsPage(
+                      invoiceModel: invoiceModel,
+                    )));
       },
       child: ListTile(
         title: Text(invoiceModel.title),
