@@ -26,7 +26,9 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const EditInvoicePage()));
+                        builder: (context) => EditInvoicePage(
+                              invoiceModel: widget.invoiceModel,
+                            )));
               },
               icon: const Icon(
                 Icons.edit_document,
