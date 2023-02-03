@@ -16,7 +16,8 @@ class UserProfile extends StatelessWidget {
             ],
             actions: [
               SignedOutAction(
-                (context) => Navigator.of(context).pop(),
+                (context) =>
+                    Navigator.popUntil(context, (route) => route.isFirst),
               ),
             ],
             avatarSize: 24,
