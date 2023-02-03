@@ -22,6 +22,7 @@ mixin _$InvoiceModel {
   double get net => throw _privateConstructorUsedError;
   int get vat => throw _privateConstructorUsedError;
   String get gross => throw _privateConstructorUsedError;
+  String get fileName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InvoiceModelCopyWith<InvoiceModel> get copyWith =>
@@ -40,7 +41,8 @@ abstract class $InvoiceModelCopyWith<$Res> {
       String contrahent,
       double net,
       int vat,
-      String gross});
+      String gross,
+      String fileName});
 }
 
 /// @nodoc
@@ -62,6 +64,7 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
     Object? net = null,
     Object? vat = null,
     Object? gross = null,
+    Object? fileName = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -88,6 +91,10 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
           ? _value.gross
           : gross // ignore: cast_nullable_to_non_nullable
               as String,
+      fileName: null == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -106,7 +113,8 @@ abstract class _$$_InvoiceModelCopyWith<$Res>
       String contrahent,
       double net,
       int vat,
-      String gross});
+      String gross,
+      String fileName});
 }
 
 /// @nodoc
@@ -126,6 +134,7 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
     Object? net = null,
     Object? vat = null,
     Object? gross = null,
+    Object? fileName = null,
   }) {
     return _then(_$_InvoiceModel(
       id: null == id
@@ -152,6 +161,10 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
           ? _value.gross
           : gross // ignore: cast_nullable_to_non_nullable
               as String,
+      fileName: null == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -165,7 +178,8 @@ class _$_InvoiceModel extends _InvoiceModel {
       required this.contrahent,
       required this.net,
       required this.vat,
-      required this.gross})
+      required this.gross,
+      required this.fileName})
       : super._();
 
   @override
@@ -180,10 +194,12 @@ class _$_InvoiceModel extends _InvoiceModel {
   final int vat;
   @override
   final String gross;
+  @override
+  final String fileName;
 
   @override
   String toString() {
-    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat, gross: $gross)';
+    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat, gross: $gross, fileName: $fileName)';
   }
 
   @override
@@ -197,12 +213,14 @@ class _$_InvoiceModel extends _InvoiceModel {
                 other.contrahent == contrahent) &&
             (identical(other.net, net) || other.net == net) &&
             (identical(other.vat, vat) || other.vat == vat) &&
-            (identical(other.gross, gross) || other.gross == gross));
+            (identical(other.gross, gross) || other.gross == gross) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, contrahent, net, vat, gross);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, contrahent, net, vat, gross, fileName);
 
   @JsonKey(ignore: true)
   @override
@@ -218,7 +236,8 @@ abstract class _InvoiceModel extends InvoiceModel {
       required final String contrahent,
       required final double net,
       required final int vat,
-      required final String gross}) = _$_InvoiceModel;
+      required final String gross,
+      required final String fileName}) = _$_InvoiceModel;
   const _InvoiceModel._() : super._();
 
   @override
@@ -233,6 +252,8 @@ abstract class _InvoiceModel extends InvoiceModel {
   int get vat;
   @override
   String get gross;
+  @override
+  String get fileName;
   @override
   @JsonKey(ignore: true)
   _$$_InvoiceModelCopyWith<_$_InvoiceModel> get copyWith =>

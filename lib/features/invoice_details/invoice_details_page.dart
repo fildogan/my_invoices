@@ -79,7 +79,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: 'InvoiceXYZ0020.pdf',
+              initialValue: widget.invoiceModel.fileName,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Attachment',
