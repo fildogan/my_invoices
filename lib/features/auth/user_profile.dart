@@ -6,11 +6,11 @@ class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: Scaffold(
-          appBar: AppBar(title: const Text('User Page')),
-          drawer: const MenuDrawer(),
-          body: ProfileScreen(
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(title: const Text('User Page')),
+        drawer: const MenuDrawer(),
+        body: SafeArea(
+          child: ProfileScreen(
             providers: [
               EmailAuthProvider(),
             ],
