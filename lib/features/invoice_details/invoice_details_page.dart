@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/features/edit_invoice_page/edit_invoice_page.dart';
 
 class InvoiceDetailsPage extends StatefulWidget {
   const InvoiceDetailsPage({super.key});
@@ -15,7 +16,12 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
         title: const Text('Invoice XYZ0020'),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditInvoicePage()));
+              },
               icon: const Icon(
                 Icons.edit_document,
               ))

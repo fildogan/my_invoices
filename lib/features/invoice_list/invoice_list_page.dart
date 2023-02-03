@@ -7,13 +7,13 @@ class InvoiceListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Invoices'),
-        ),
-        drawer: const MenuDrawer(),
-        body: ListView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Invoices'),
+      ),
+      drawer: const MenuDrawer(),
+      body: SafeArea(
+        child: ListView(
           children: [
             InkWell(
               onTap: () {
