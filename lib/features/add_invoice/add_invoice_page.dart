@@ -1,7 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AddInvoicePage extends StatefulWidget {
   const AddInvoicePage({super.key});
@@ -16,7 +22,10 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   double net = 0;
   int vat = 0;
   double gross = 0;
+  Uint8List? fileBytes;
+  String fileName = '';
   TextEditingController grossController = TextEditingController();
+  TextEditingController fileNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +50,9 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   'vat': vat,
                   'gross': gross.toStringAsFixed(2)
                 });
+                await FirebaseStorage.instance
+                    .ref('uploads/$userID/$fileName')
+                    .putData(fileBytes!);
               },
               icon: const Icon(
                 Icons.save,
@@ -79,9 +91,9 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 contentPadding: EdgeInsets.all(10),
               ),
               onChanged: (newValue) {
-                setState(() async {
+                setState(() {
                   net = double.parse(newValue);
-                  calculateGross();
+                  _calculateGross();
                 });
               },
             ),
@@ -91,9 +103,9 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 contentPadding: EdgeInsets.all(10),
               ),
               onChanged: (newValue) {
-                setState(() async {
+                setState(() {
                   vat = int.parse(newValue);
-                  calculateGross();
+                  _calculateGross();
                 });
               },
             ),
@@ -106,11 +118,30 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 contentPadding: EdgeInsets.all(10),
               ),
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Attachment',
-                contentPadding: EdgeInsets.all(10),
+            InkWell(
+              onTap: () {
+                _pickFiles();
+              },
+              child: TextFormField(
+                enabled: false,
+                controller: fileNameController,
+                onTap: () {
+                  _pickFiles();
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Attachment',
+                  contentPadding: EdgeInsets.all(10),
+                ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final userID = FirebaseAuth.instance.currentUser?.uid;
+                await FirebaseStorage.instance
+                    .ref('invoices/$userID/$fileName')
+                    .putData(fileBytes!);
+              },
+              child: const Text('Add file test'),
             ),
           ],
         ),
@@ -118,8 +149,44 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
     );
   }
 
-  void calculateGross() {
+  void _setFileName(String name) {
+    fileNameController.text = name;
+    setState(() {
+      fileName = name;
+    });
+  }
+
+  void _setFileBytes(Uint8List bytes) {
+    setState(() {
+      fileBytes = bytes;
+    });
+  }
+
+  void _calculateGross() {
     gross = net + (net * (vat / 100));
     grossController.text = gross.toStringAsFixed(2);
+  }
+
+  void _pickFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      withData: true,
+    );
+
+    if (result != null &&
+        result.files.single.path != null &&
+        result.files.first.bytes != null) {
+      PlatformFile file = result.files.first;
+      print(file.name);
+      print(file.bytes);
+      print(file.size);
+      print(file.extension);
+      print(file.path);
+
+      _setFileName(file.name);
+
+      _setFileBytes(file.bytes!);
+    }
   }
 }
