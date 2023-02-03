@@ -5,7 +5,7 @@ import 'package:moje_faktury/app/core/config.dart';
 import 'package:moje_faktury/firebase_options.dart';
 
 void main() async {
-  Config.appFlavor = Flavor.development;
+  Config.appFlavor = Flavor.staging;
   WidgetsFlutterBinding.ensureInitialized();
   // configureDependencies();
   await Firebase.initializeApp(
