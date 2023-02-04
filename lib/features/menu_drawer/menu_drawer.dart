@@ -25,6 +25,7 @@ class MenuDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
                                 onTap: () => Navigator.of(context).pop(),
@@ -32,13 +33,17 @@ class MenuDrawer extends StatelessWidget {
                                   Icons.arrow_back,
                                   size: 30,
                                 )),
-                            const SizedBox(
-                              width: 10,
+                            const Expanded(
+                              child: Text(
+                                'Main menu',
+                                style: TextStyle(fontSize: 24),
+                              ),
                             ),
-                            const Text(
-                              'Main menu',
-                              style: TextStyle(fontSize: 24),
-                            ),
+                            Image.asset(
+                              'assets/images/my_invoices_logo.png',
+                              height: 70,
+                              width: 70,
+                            )
                           ],
                         )),
                   ),
@@ -89,7 +94,7 @@ class MenuDrawer extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => const UserProfile()));
                     },
-                  )
+                  ),
                 ],
               ),
             ),

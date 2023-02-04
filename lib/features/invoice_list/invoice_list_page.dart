@@ -53,7 +53,18 @@ class InvoiceListPage extends StatelessWidget {
                 },
               ).toList();
               if (invoices.isEmpty) {
-                return const Center(child: Text('No invoices added yet...'));
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/my_invoices_logo.png',
+                      width: 100,
+                      height: 100,
+                    ),
+                    const Text('No invoices added yet...'),
+                  ],
+                ));
               }
               return ListView(
                 children: [
