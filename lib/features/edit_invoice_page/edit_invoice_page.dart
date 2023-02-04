@@ -1,7 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
 
 class EditInvoicePage extends StatefulWidget {
@@ -23,6 +28,9 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   late int vat;
   late double gross;
   late String fileName;
+  bool isfileDeleted = false;
+
+  Uint8List? fileBytes;
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
 
@@ -64,7 +72,14 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                   'net': net,
                   'vat': vat,
                   'gross': gross.toStringAsFixed(2),
+                  'file_name': fileName
                 });
+                if (isfileDeleted) {
+                  await FirebaseStorage.instance
+                      .ref(
+                          'invoices/$userID/${widget.invoiceModel.id}/$fileName')
+                      .putData(fileBytes!);
+                }
               },
               icon: const Icon(
                 Icons.save,
@@ -133,12 +148,19 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                 contentPadding: EdgeInsets.all(10),
               ),
             ),
-            TextFormField(
-              enabled: false,
-              controller: fileNameController,
-              decoration: const InputDecoration(
-                labelText: 'Attachment',
-                contentPadding: EdgeInsets.all(10),
+            InkWell(
+              onTap: () {
+                if (isfileDeleted) {
+                  _pickFiles();
+                }
+              },
+              child: TextFormField(
+                enabled: false,
+                controller: fileNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Attachment',
+                  contentPadding: EdgeInsets.all(10),
+                ),
               ),
             ),
             ElevatedButton(
@@ -148,6 +170,9 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                       .ref(
                           'invoices/$userID/${widget.invoiceModel.id}/$fileName')
                       .delete();
+                  setState(() {
+                    isfileDeleted = true;
+                  });
                   _setFileName('');
                 },
                 child: const Text('delete file'))
@@ -167,5 +192,34 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
       fileName = name;
       fileNameController.text = name;
     });
+  }
+
+  void _setFileBytes(Uint8List bytes) {
+    setState(() {
+      fileBytes = bytes;
+    });
+  }
+
+  void _pickFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      withData: true,
+    );
+
+    if (result != null &&
+        result.files.single.path != null &&
+        result.files.first.bytes != null) {
+      PlatformFile file = result.files.first;
+      print(file.name);
+      print(file.bytes);
+      print(file.size);
+      print(file.extension);
+      print(file.path);
+
+      _setFileName(file.name);
+
+      _setFileBytes(file.bytes!);
+    }
   }
 }
