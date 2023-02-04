@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:moje_faktury/utils/form_extensions.dart';
 
 class AddInvoicePage extends StatefulWidget {
   const AddInvoicePage({super.key});
@@ -217,37 +218,29 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   return null;
                 },
               ),
-              InkWell(
+              TextFormField(
+                enableInteractiveSelection: false,
+                focusNode: AlwaysDisabledFocusNode(),
+                controller: fileNameController,
                 onTap: () {
                   _pickFiles();
                 },
-                child: TextFormField(
-                  // enabled: false,
-                  enableInteractiveSelection:
-                      false, // will disable paste operation
-                  focusNode: AlwaysDisabledFocusNode(),
-
-                  controller: fileNameController,
-                  onTap: () {
-                    _pickFiles();
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Attachment',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                  validator: (val) {
-                    if (val == null) {
-                      return 'Pick a fle';
-                    }
-                    if (!val.isNotEmpty) {
-                      return 'Pick a fle';
-                    }
-                    if (fileBytes == null) {
-                      return 'Pick a fle';
-                    }
-                    return null;
-                  },
+                decoration: const InputDecoration(
+                  labelText: 'Attachment',
+                  contentPadding: EdgeInsets.all(10),
                 ),
+                validator: (val) {
+                  if (val == null) {
+                    return 'Pick a fle';
+                  }
+                  if (!val.isNotEmpty) {
+                    return 'Pick a fle';
+                  }
+                  if (fileBytes == null) {
+                    return 'Pick a fle';
+                  }
+                  return null;
+                },
               ),
             ],
           ),
@@ -316,24 +309,4 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
       _setFileBytes(file.bytes!);
     }
   }
-}
-
-extension StringExtension on String {
-  bool get isNotEmpty {
-    return trim().isNotEmpty;
-  }
-
-  bool get isGreaterThanZero {
-    try {
-      final numValue = num.parse(this);
-      return numValue > 0;
-    } catch (_) {
-      return false;
-    }
-  }
-}
-
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
 }
