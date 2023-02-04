@@ -26,7 +26,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   String invoiceId = '';
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,25 +39,27 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 if (userID == null) {
                   throw Exception('User is not logged in');
                 }
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(userID)
-                    .collection('invoices')
-                    .add({
-                  'title': title,
-                  'contrahent': contrahent,
-                  'net': net,
-                  'vat': vat,
-                  'gross': gross.toStringAsFixed(2),
-                  'file_name': fileName
-                }).then((value) {
-                  setState(() {
-                    invoiceId = value.id;
+                if (_formKey.currentState!.validate()) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(userID)
+                      .collection('invoices')
+                      .add({
+                    'title': title,
+                    'contrahent': contrahent,
+                    'net': net,
+                    'vat': vat,
+                    'gross': gross.toStringAsFixed(2),
+                    'file_name': fileName
+                  }).then((value) {
+                    setState(() {
+                      invoiceId = value.id;
+                    });
                   });
-                });
-                await FirebaseStorage.instance
-                    .ref('invoices/$userID/$invoiceId/$fileName')
-                    .putData(fileBytes!);
+                  await FirebaseStorage.instance
+                      .ref('invoices/$userID/$invoiceId/$fileName')
+                      .putData(fileBytes!);
+                }
               },
               icon: const Icon(
                 Icons.save,
@@ -66,120 +68,181 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
       ),
       drawer: const MenuDrawer(),
       body: SafeArea(
-        child: ListView(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Invoice no.',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  title = newValue;
-                });
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Contrahent',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  contrahent = newValue;
-                });
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Net amount',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  net = double.parse(newValue);
-                  _calculateGross();
-                });
-              },
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(
-                  RegExp(r'^\d*\.?\d{0,2}'),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Invoice no.',
+                  contentPadding: EdgeInsets.all(10),
                 ),
-              ],
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-            ),
-            // TextFormField(
-            //   decoration: const InputDecoration(
-            //     labelText: 'VAT rate',
-            //     contentPadding: EdgeInsets.all(10),
-            //   ),
-            //   onChanged: (newValue) {
-            //     setState(() {
-            //       vat = int.parse(newValue);
-            //       _calculateGross();
-            //     });
-            //   },
-            // ),
-            DropdownButtonFormField<int>(
-              value: vat,
-              decoration: const InputDecoration(
-                labelText: 'VAT rate',
-                contentPadding: EdgeInsets.all(10),
+                onChanged: (newValue) {
+                  setState(() {
+                    title = newValue;
+                  });
+                },
+                validator: (val) {
+                  if (val == null) {
+                    return 'Must not be empty';
+                  }
+                  if (!val.isNotEmpty) {
+                    return 'Must not be empty';
+                  }
+                  return null;
+                },
               ),
-              items: const [
-                DropdownMenuItem(
-                  value: 0,
-                  child: Text(
-                    '0%',
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Contrahent',
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    contrahent = newValue;
+                  });
+                },
+                validator: (val) {
+                  if (val == null) {
+                    return 'Must not be empty';
+                  }
+                  if (!val.isNotEmpty) {
+                    return 'Must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Net amount',
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    net = double.parse(newValue);
+                    _calculateGross();
+                  });
+                },
+                validator: (val) {
+                  if (val == null) {
+                    return 'Must not be empty';
+                  }
+                  if (!val.isNotEmpty) {
+                    return 'Must not be empty';
+                  }
+                  if (!val.isGreaterThanZero) {
+                    return 'Must be greater than 0';
+                  }
+                  return null;
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^\d*\.?\d{0,2}'),
                   ),
-                ),
-                DropdownMenuItem(
-                  value: 7,
-                  child: Text(
-                    '7%',
-                  ),
-                ),
-                DropdownMenuItem(
-                  value: 23,
-                  child: Text(
-                    '23%',
-                  ),
-                ),
-              ],
-              onChanged: (newValue) {
-                setState(() async {
-                  vat = newValue ?? vat;
-                  _calculateGross();
-                });
-              },
-            ),
-            TextFormField(
-              enabled: false,
-              controller: grossController,
-              // initialValue: gross.toStringAsFixed(2),
-              decoration: const InputDecoration(
-                labelText: 'Gross amount',
-                contentPadding: EdgeInsets.all(10),
+                ],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
-            ),
-            InkWell(
-              onTap: () {
-                _pickFiles();
-              },
-              child: TextFormField(
-                enabled: false,
-                controller: fileNameController,
+              DropdownButtonFormField<int>(
+                value: vat,
+                decoration: const InputDecoration(
+                  labelText: 'VAT rate',
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                validator: (val) {
+                  if (vat == null) {
+                    return 'Choose from list';
+                  }
+                  if (val == null) {
+                    return 'Must not be empty';
+                  }
+                  if (!val.toString().isNotEmpty) {
+                    return 'Must not be empty';
+                  }
+                  return null;
+                },
+                items: const [
+                  DropdownMenuItem(
+                    value: 0,
+                    child: Text(
+                      '0%',
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 7,
+                    child: Text(
+                      '7%',
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 23,
+                    child: Text(
+                      '23%',
+                    ),
+                  ),
+                ],
+                onChanged: (newValue) {
+                  setState(() {
+                    vat = newValue ?? vat;
+                    _calculateGross();
+                  });
+                },
+              ),
+              TextFormField(
+                enableInteractiveSelection: false,
+                focusNode: AlwaysDisabledFocusNode(),
+                controller: grossController,
+                decoration: const InputDecoration(
+                  labelText: 'Gross amount',
+                  contentPadding: EdgeInsets.all(10),
+                ),
+                validator: (val) {
+                  if (val == null) {
+                    return 'Net value must not be empty';
+                  }
+                  if (!val.isNotEmpty) {
+                    return 'Net value must not be empty';
+                  }
+                  if (!val.isGreaterThanZero) {
+                    return 'Net value must be greater than 0';
+                  }
+                  return null;
+                },
+              ),
+              InkWell(
                 onTap: () {
                   _pickFiles();
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Attachment',
-                  contentPadding: EdgeInsets.all(10),
+                child: TextFormField(
+                  // enabled: false,
+                  enableInteractiveSelection:
+                      false, // will disable paste operation
+                  focusNode: AlwaysDisabledFocusNode(),
+
+                  controller: fileNameController,
+                  onTap: () {
+                    _pickFiles();
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Attachment',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Pick a fle';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Pick a fle';
+                    }
+                    if (fileBytes == null) {
+                      return 'Pick a fle';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -225,4 +288,24 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
       _setFileBytes(file.bytes!);
     }
   }
+}
+
+extension StringExtension on String {
+  bool get isNotEmpty {
+    return trim().isNotEmpty;
+  }
+
+  bool get isGreaterThanZero {
+    try {
+      final numValue = num.parse(this);
+      return numValue > 0;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
