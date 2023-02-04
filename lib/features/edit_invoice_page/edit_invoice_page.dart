@@ -265,20 +265,20 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                   ),
                   validator: (val) {
                     if (val == null) {
-                      return 'Pick a fle';
+                      return 'Pick a file1';
                     }
                     if (!val.isNotEmpty) {
-                      return 'Pick a fle';
+                      return 'Pick a file2';
                     }
                     if (val == '') {
-                      return 'Pick a fle';
+                      return 'Pick a file3';
                     }
                     if (fileName == '') {
-                      return 'Pick a fle';
+                      return 'Pick a file4';
                     }
-                    if (fileBytes == null) {
-                      return 'Pick a fle';
-                    }
+                    // if (fileBytes == null) {
+                    //   return 'Pick a fle5';
+                    // }
                     return null;
                   },
                 ),
