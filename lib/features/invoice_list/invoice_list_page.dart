@@ -52,7 +52,9 @@ class InvoiceListPage extends StatelessWidget {
                   );
                 },
               ).toList();
-
+              if (invoices.isEmpty) {
+                return const Center(child: Text('No invoices added yet...'));
+              }
               return ListView(
                 children: [
                   for (final invoice in invoices) ...[
