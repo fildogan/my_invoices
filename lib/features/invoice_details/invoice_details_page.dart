@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/api/pdf_api.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
 import 'package:moje_faktury/features/edit_invoice_page/edit_invoice_page.dart';
+import 'package:moje_faktury/features/pdf_viewer/pdf_viewer_page.dart';
 
 class InvoiceDetailsPage extends StatefulWidget {
   const InvoiceDetailsPage({
@@ -86,9 +91,29 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
                 contentPadding: EdgeInsets.all(10),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final userID = FirebaseAuth.instance.currentUser?.uid;
+
+                  final url =
+                      'invoices/$userID/${widget.invoiceModel.id}/${widget.invoiceModel.fileName}';
+                  final file = await PDFApi.loadFirebase(url);
+                  if (file != null) {
+                    openPDF(context, file);
+                  }
+                },
+                child: const Text('View pdf file'),
+              ),
+            )
           ],
         ),
       ),
     );
   }
+
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+      );
 }
