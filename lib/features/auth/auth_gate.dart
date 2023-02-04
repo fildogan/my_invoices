@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
-import 'package:moje_faktury/features/home/home_page.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
