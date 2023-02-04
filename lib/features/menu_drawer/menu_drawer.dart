@@ -25,19 +25,37 @@ class MenuDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
                                 onTap: () => Navigator.of(context).pop(),
-                                child: const Icon(Icons.arrow_back)),
-                            const SizedBox(
-                              width: 10,
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  size: 30,
+                                )),
+                            const Expanded(
+                              child: Text(
+                                'Main menu',
+                                style: TextStyle(fontSize: 24),
+                              ),
                             ),
-                            const Text('menu'),
+                            Image.asset(
+                              'assets/images/my_invoices_logo.png',
+                              height: 70,
+                              width: 70,
+                            )
                           ],
                         )),
                   ),
                   ListTile(
-                    title: const Text('Add invoice'),
+                    leading: const Icon(
+                      Icons.note_add,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'Add invoice',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -46,7 +64,14 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Text('List of invoices'),
+                    leading: const Icon(
+                      Icons.list,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'List of invoices',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -55,14 +80,21 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Text('Account'),
+                    leading: const Icon(
+                      Icons.person,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'Account',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const UserProfile()));
                     },
-                  )
+                  ),
                 ],
               ),
             ),

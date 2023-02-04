@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
+import 'package:moje_faktury/utils/form_extensions.dart';
 
 class EditInvoicePage extends StatefulWidget {
   const EditInvoicePage({
@@ -33,6 +33,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   Uint8List? fileBytes;
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -51,132 +52,255 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit ${widget.invoiceModel.title}'),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                final userID = FirebaseAuth.instance.currentUser?.uid;
-                if (userID == null) {
-                  throw Exception('User is not logged in');
-                }
-                await FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(userID)
-                    .collection('invoices')
-                    .doc(widget.invoiceModel.id)
-                    .update({
-                  'title': title,
-                  'contrahent': contrahent,
-                  'net': net,
-                  'vat': vat,
-                  'gross': gross.toStringAsFixed(2),
-                  'file_name': fileName
-                });
-                if (isfileDeleted) {
-                  await FirebaseStorage.instance
-                      .ref(
-                          'invoices/$userID/${widget.invoiceModel.id}/$fileName')
-                      .putData(fileBytes!);
-                }
-              },
-              icon: const Icon(
-                Icons.save,
-              ))
-        ],
-      ),
-      body: SafeArea(
-        child: ListView(
-          children: [
-            TextFormField(
-              initialValue: widget.invoiceModel.title,
-              decoration: const InputDecoration(
-                labelText: 'Invoice no.',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  title = newValue;
-                });
-              },
-            ),
-            TextFormField(
-              initialValue: widget.invoiceModel.contrahent,
-              decoration: const InputDecoration(
-                labelText: 'Contrahent',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  contrahent = newValue;
-                });
-              },
-            ),
-            TextFormField(
-              initialValue: widget.invoiceModel.net.toString(),
-              decoration: const InputDecoration(
-                labelText: 'Net amount',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() async {
-                  net = double.parse(newValue);
-                  _calculateGross();
-                });
-              },
-            ),
-            TextFormField(
-              initialValue: '${widget.invoiceModel.vat}%',
-              decoration: const InputDecoration(
-                labelText: 'VAT rate',
-                contentPadding: EdgeInsets.all(10),
-              ),
-              onChanged: (newValue) {
-                setState(() async {
-                  vat = int.parse(newValue);
-                  _calculateGross();
-                });
-              },
-            ),
-            TextFormField(
-              enabled: false,
-              controller: grossController,
-              decoration: const InputDecoration(
-                labelText: 'Gross amount',
-                hintText: 'hint',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (isfileDeleted) {
-                  _pickFiles();
-                }
-              },
-              child: TextFormField(
-                enabled: false,
-                controller: fileNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Attachment',
-                  contentPadding: EdgeInsets.all(10),
-                ),
-              ),
-            ),
-            ElevatedButton(
+    return WillPopScope(
+      onWillPop: () async {
+        return !isfileDeleted;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Edit ${widget.invoiceModel.title}'),
+          actions: [
+            IconButton(
                 onPressed: () async {
                   final userID = FirebaseAuth.instance.currentUser?.uid;
-                  await FirebaseStorage.instance
-                      .ref(
-                          'invoices/$userID/${widget.invoiceModel.id}/$fileName')
-                      .delete();
-                  setState(() {
-                    isfileDeleted = true;
-                  });
-                  _setFileName('');
+                  if (userID == null) {
+                    throw Exception('User is not logged in');
+                  }
+                  if (_formKey.currentState!.validate()) {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userID)
+                        .collection('invoices')
+                        .doc(widget.invoiceModel.id)
+                        .update({
+                      'title': title,
+                      'contrahent': contrahent,
+                      'net': net,
+                      'vat': vat,
+                      'gross': gross.toStringAsFixed(2),
+                      'file_name': fileName
+                    });
+                    if (isfileDeleted) {
+                      await FirebaseStorage.instance
+                          .ref(
+                              'invoices/$userID/${widget.invoiceModel.id}/$fileName')
+                          .putData(fileBytes!);
+                    }
+
+                    Navigator.pop(
+                        context,
+                        InvoiceModel(
+                            id: widget.invoiceModel.id,
+                            title: title,
+                            contrahent: contrahent,
+                            net: net,
+                            vat: vat,
+                            gross: gross.toStringAsFixed(2),
+                            fileName: fileName));
+                  }
                 },
-                child: const Text('delete file'))
+                icon: const Icon(
+                  Icons.save,
+                ))
           ],
+        ),
+        body: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                TextFormField(
+                  initialValue: widget.invoiceModel.title,
+                  decoration: const InputDecoration(
+                    labelText: 'Invoice no.',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  onChanged: (newValue) {
+                    setState(() {
+                      title = newValue;
+                    });
+                  },
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Must not be empty';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Must not be empty';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: widget.invoiceModel.contrahent,
+                  decoration: const InputDecoration(
+                    labelText: 'Contrahent',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  onChanged: (newValue) {
+                    setState(() {
+                      contrahent = newValue;
+                    });
+                  },
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Must not be empty';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Must not be empty';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  initialValue: widget.invoiceModel.net.toString(),
+                  decoration: const InputDecoration(
+                    labelText: 'Net amount',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  onChanged: (newValue) {
+                    setState(() async {
+                      net = double.parse(newValue);
+                      _calculateGross();
+                    });
+                  },
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Must not be empty';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Must not be empty';
+                    }
+                    if (!val.isGreaterThanZero) {
+                      return 'Must be greater than 0';
+                    }
+                    return null;
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'^\d*\.?\d{0,2}'),
+                    ),
+                  ],
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                ),
+                DropdownButtonFormField<int>(
+                  value: widget.invoiceModel.vat,
+                  decoration: const InputDecoration(
+                    labelText: 'VAT rate',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  validator: (val) {
+                    if (vat == null) {
+                      return 'Choose from list';
+                    }
+                    if (val == null) {
+                      return 'Must not be empty';
+                    }
+                    if (!val.toString().isNotEmpty) {
+                      return 'Must not be empty';
+                    }
+                    return null;
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text(
+                        '0%',
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 7,
+                      child: Text(
+                        '7%',
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 23,
+                      child: Text(
+                        '23%',
+                      ),
+                    ),
+                  ],
+                  onChanged: (newValue) {
+                    setState(() async {
+                      vat = newValue ?? vat;
+                      _calculateGross();
+                    });
+                  },
+                ),
+                TextFormField(
+                  enableInteractiveSelection: false,
+                  focusNode: AlwaysDisabledFocusNode(),
+                  controller: grossController,
+                  decoration: const InputDecoration(
+                    labelText: 'Gross amount',
+                    hintText: 'hint',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Net value must not be empty';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Net value must not be empty';
+                    }
+                    if (!val.isGreaterThanZero) {
+                      return 'Net value must be greater than 0';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  enableInteractiveSelection: false,
+                  focusNode: AlwaysDisabledFocusNode(),
+                  controller: fileNameController,
+                  onTap: () {
+                    if (isfileDeleted) {
+                      _pickFiles();
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Attachment',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  validator: (val) {
+                    if (val == null) {
+                      return 'Pick a file1';
+                    }
+                    if (!val.isNotEmpty) {
+                      return 'Pick a file2';
+                    }
+                    if (val == '') {
+                      return 'Pick a file3';
+                    }
+                    if (fileName == '') {
+                      return 'Pick a file4';
+                    }
+                    // if (fileBytes == null) {
+                    //   return 'Pick a fle5';
+                    // }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        final userID = FirebaseAuth.instance.currentUser?.uid;
+                        await FirebaseStorage.instance
+                            .ref(
+                                'invoices/$userID/${widget.invoiceModel.id}/$fileName')
+                            .delete();
+                        setState(() {
+                          isfileDeleted = true;
+                        });
+                        _setFileName('');
+                      },
+                      child: const Text('delete file')),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
