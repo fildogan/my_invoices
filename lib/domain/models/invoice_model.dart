@@ -13,6 +13,7 @@ class InvoiceModel with _$InvoiceModel {
     required double net,
     required int vat,
     required String gross,
+    required String fileName,
   }) = _InvoiceModel;
   const InvoiceModel._();
 }

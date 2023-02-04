@@ -47,6 +47,7 @@ class InvoiceListPage extends StatelessWidget {
                         ? int.parse(doc['vat'].toString())
                         : 0,
                     gross: doc['gross'].toString(),
+                    fileName: doc['file_name'].toString(),
                   );
                 },
               ).toList();
