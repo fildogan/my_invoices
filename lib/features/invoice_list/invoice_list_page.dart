@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
 import 'package:moje_faktury/features/invoice_details/invoice_details_page.dart';
@@ -32,7 +33,7 @@ class InvoiceListPage extends StatelessWidget {
                 return const Center(child: Text('Something went wrong'));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
               final invoices = snapshot.data!.docs.map(
                 (doc) {
@@ -98,6 +99,10 @@ class InvoiceTile extends StatelessWidget {
               .doc(userID)
               .collection('invoices')
               .doc(invoiceModel.id)
+              .delete();
+          await FirebaseStorage.instance
+              .ref(
+                  'invoices/$userID/${invoiceModel.id}/${invoiceModel.fileName}')
               .delete();
         },
         direction: DismissDirection.endToStart,
