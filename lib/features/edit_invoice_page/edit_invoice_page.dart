@@ -80,6 +80,17 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                           'invoices/$userID/${widget.invoiceModel.id}/$fileName')
                       .putData(fileBytes!);
                 }
+
+                Navigator.pop(
+                    context,
+                    InvoiceModel(
+                        id: widget.invoiceModel.id,
+                        title: title,
+                        contrahent: contrahent,
+                        net: net,
+                        vat: vat,
+                        gross: gross.toStringAsFixed(2),
+                        fileName: fileName));
               },
               icon: const Icon(
                 Icons.save,

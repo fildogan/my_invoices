@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/api/pdf_api.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
@@ -20,20 +21,32 @@ class InvoiceDetailsPage extends StatefulWidget {
 }
 
 class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
+  late InvoiceModel currentInvoice;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contrahentController = TextEditingController();
+  TextEditingController netController = TextEditingController();
+  TextEditingController vatController = TextEditingController();
+  TextEditingController grossController = TextEditingController();
+  TextEditingController fileNameController = TextEditingController();
+
+  @override
+  void initState() {
+    setState(() {
+      currentInvoice = widget.invoiceModel;
+    });
+    updateFields(currentInvoice);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.invoiceModel.title),
+        title: Text(currentInvoice.title),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditInvoicePage(
-                              invoiceModel: widget.invoiceModel,
-                            )));
+                goToEditInvoicePage(currentInvoice);
               },
               icon: const Icon(
                 Icons.edit_document,
@@ -44,7 +57,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
         child: ListView(
           children: [
             TextFormField(
-              initialValue: widget.invoiceModel.title,
+              controller: titleController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Invoice no.',
@@ -52,7 +65,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: widget.invoiceModel.contrahent,
+              controller: contrahentController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Contrahent',
@@ -60,7 +73,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '${widget.invoiceModel.net} PLN',
+              controller: netController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Net amount',
@@ -68,7 +81,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '${widget.invoiceModel.vat}%',
+              controller: vatController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'VAT rate',
@@ -76,7 +89,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: '${widget.invoiceModel.gross} PLN',
+              controller: grossController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Gross amount',
@@ -84,7 +97,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ),
             ),
             TextFormField(
-              initialValue: widget.invoiceModel.fileName,
+              controller: fileNameController,
               enabled: false,
               decoration: const InputDecoration(
                 labelText: 'Attachment',
@@ -98,7 +111,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
                   final userID = FirebaseAuth.instance.currentUser?.uid;
 
                   final url =
-                      'invoices/$userID/${widget.invoiceModel.id}/${widget.invoiceModel.fileName}';
+                      'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
                   final file = await PDFApi.loadFirebase(url);
                   if (file != null) {
                     openPDF(context, file);
@@ -116,4 +129,34 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
   void openPDF(BuildContext context, File file) => Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
       );
+
+  void goToEditInvoicePage(InvoiceModel invoiceModel) async {
+    final newInvoice = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => EditInvoicePage(
+                invoiceModel: currentInvoice,
+              )),
+    );
+    updateInvoice(newInvoice);
+  }
+
+  void updateInvoice(InvoiceModel newInvoice) {
+    setState(() {
+      currentInvoice = newInvoice;
+    });
+    updateFields(newInvoice);
+  }
+
+  void updateFields(InvoiceModel newInvoice) {
+    setState(() {
+      titleController.text = newInvoice.title;
+      contrahentController.text = newInvoice.contrahent;
+      netController.text = newInvoice.net.toStringAsFixed(2);
+      vatController.text = newInvoice.vat.toString();
+      grossController.text = newInvoice.gross;
+      fileNameController.text = newInvoice.fileName;
+    });
+  }
 }
