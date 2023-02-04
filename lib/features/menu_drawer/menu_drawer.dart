@@ -28,16 +28,29 @@ class MenuDrawer extends StatelessWidget {
                           children: [
                             InkWell(
                                 onTap: () => Navigator.of(context).pop(),
-                                child: const Icon(Icons.arrow_back)),
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  size: 30,
+                                )),
                             const SizedBox(
                               width: 10,
                             ),
-                            const Text('menu'),
+                            const Text(
+                              'Main menu',
+                              style: TextStyle(fontSize: 24),
+                            ),
                           ],
                         )),
                   ),
                   ListTile(
-                    title: const Text('Add invoice'),
+                    leading: const Icon(
+                      Icons.note_add,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'Add invoice',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -46,7 +59,14 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Text('List of invoices'),
+                    leading: const Icon(
+                      Icons.list,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'List of invoices',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -55,7 +75,14 @@ class MenuDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Text('Account'),
+                    leading: const Icon(
+                      Icons.person,
+                      size: 24,
+                    ),
+                    title: const Text(
+                      'Account',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
