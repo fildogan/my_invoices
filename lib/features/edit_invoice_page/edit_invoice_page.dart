@@ -143,15 +143,48 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
             ),
-            TextFormField(
-              initialValue: '${widget.invoiceModel.vat}%',
+            // TextFormField(
+            //   initialValue: '${widget.invoiceModel.vat}%',
+            //   decoration: const InputDecoration(
+            //     labelText: 'VAT rate',
+            //     contentPadding: EdgeInsets.all(10),
+            //   ),
+            //   onChanged: (newValue) {
+            //     setState(() async {
+            //       vat = int.parse(newValue);
+            //       _calculateGross();
+            //     });
+            //   },
+            // ),
+            DropdownButtonFormField<int>(
+              value: widget.invoiceModel.vat,
               decoration: const InputDecoration(
                 labelText: 'VAT rate',
                 contentPadding: EdgeInsets.all(10),
               ),
+              items: const [
+                DropdownMenuItem(
+                  value: 0,
+                  child: Text(
+                    '0%',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 7,
+                  child: Text(
+                    '7%',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 23,
+                  child: Text(
+                    '23%',
+                  ),
+                ),
+              ],
               onChanged: (newValue) {
                 setState(() async {
-                  vat = int.parse(newValue);
+                  vat = newValue ?? vat;
                   _calculateGross();
                 });
               },

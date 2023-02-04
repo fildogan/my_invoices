@@ -19,7 +19,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   String title = '';
   String contrahent = '';
   double net = 0;
-  int vat = 0;
+  int? vat;
   double gross = 0;
   Uint8List? fileBytes;
   String fileName = '';
@@ -109,14 +109,47 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
             ),
-            TextFormField(
+            // TextFormField(
+            //   decoration: const InputDecoration(
+            //     labelText: 'VAT rate',
+            //     contentPadding: EdgeInsets.all(10),
+            //   ),
+            //   onChanged: (newValue) {
+            //     setState(() {
+            //       vat = int.parse(newValue);
+            //       _calculateGross();
+            //     });
+            //   },
+            // ),
+            DropdownButtonFormField<int>(
+              value: vat,
               decoration: const InputDecoration(
                 labelText: 'VAT rate',
                 contentPadding: EdgeInsets.all(10),
               ),
+              items: const [
+                DropdownMenuItem(
+                  value: 0,
+                  child: Text(
+                    '0%',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 7,
+                  child: Text(
+                    '7%',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 23,
+                  child: Text(
+                    '23%',
+                  ),
+                ),
+              ],
               onChanged: (newValue) {
-                setState(() {
-                  vat = int.parse(newValue);
+                setState(() async {
+                  vat = newValue ?? vat;
                   _calculateGross();
                 });
               },
@@ -166,7 +199,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   }
 
   void _calculateGross() {
-    gross = net + (net * (vat / 100));
+    gross = net + (net * ((vat ?? 0) / 100));
     grossController.text = gross.toStringAsFixed(2);
   }
 
