@@ -24,6 +24,10 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   Uint8List? fileBytes;
   String fileName = '';
   String invoiceId = '';
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contrahentController = TextEditingController();
+  TextEditingController netController = TextEditingController();
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -59,6 +63,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   await FirebaseStorage.instance
                       .ref('invoices/$userID/$invoiceId/$fileName')
                       .putData(fileBytes!);
+                  _clearValues();
                 }
               },
               icon: const Icon(
@@ -73,6 +78,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
           child: ListView(
             children: [
               TextFormField(
+                controller: titleController,
                 decoration: const InputDecoration(
                   labelText: 'Invoice no.',
                   contentPadding: EdgeInsets.all(10),
@@ -93,6 +99,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 },
               ),
               TextFormField(
+                controller: contrahentController,
                 decoration: const InputDecoration(
                   labelText: 'Contrahent',
                   contentPadding: EdgeInsets.all(10),
@@ -113,6 +120,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                 },
               ),
               TextFormField(
+                controller: netController,
                 decoration: const InputDecoration(
                   labelText: 'Net amount',
                   contentPadding: EdgeInsets.all(10),
@@ -258,6 +266,26 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   void _setFileBytes(Uint8List bytes) {
     setState(() {
       fileBytes = bytes;
+    });
+  }
+
+  void _clearValues() {
+    setState(() {
+      title = '';
+      contrahent = '';
+      net = 0;
+      vat = null;
+      gross = 0;
+      fileBytes;
+      fileName = '';
+      invoiceId = '';
+      fileBytes = null;
+      _calculateGross();
+      titleController.text = '';
+      contrahentController.text = '';
+      netController.text = '';
+      grossController.text = '';
+      fileNameController.text = '';
     });
   }
 
