@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class AddInvoicePage extends StatefulWidget {
@@ -102,6 +101,13 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                   _calculateGross();
                 });
               },
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^\d*\.?\d{0,2}'),
+                ),
+              ],
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
             ),
             TextFormField(
               decoration: const InputDecoration(
