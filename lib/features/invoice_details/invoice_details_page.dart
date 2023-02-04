@@ -154,7 +154,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
       titleController.text = newInvoice.title;
       contrahentController.text = newInvoice.contrahent;
       netController.text = newInvoice.net.toStringAsFixed(2);
-      vatController.text = newInvoice.vat.toString();
+      vatController.text = '${newInvoice.vat.toString()}%';
       grossController.text = newInvoice.gross;
       fileNameController.text = newInvoice.fileName;
     });
