@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
 
@@ -21,7 +22,9 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   late double net;
   late int vat;
   late double gross;
+  late String fileName;
   TextEditingController grossController = TextEditingController();
+  TextEditingController fileNameController = TextEditingController();
 
   @override
   void initState() {
@@ -31,7 +34,9 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
       net = widget.invoiceModel.net;
       vat = widget.invoiceModel.vat;
       gross = double.parse(widget.invoiceModel.gross);
-      calculateGross();
+      fileName = widget.invoiceModel.fileName;
+      _calculateGross();
+      _setFileName(fileName);
     });
     super.initState();
   }
@@ -102,7 +107,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
               onChanged: (newValue) {
                 setState(() async {
                   net = double.parse(newValue);
-                  calculateGross();
+                  _calculateGross();
                 });
               },
             ),
@@ -115,7 +120,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
               onChanged: (newValue) {
                 setState(() async {
                   vat = int.parse(newValue);
-                  calculateGross();
+                  _calculateGross();
                 });
               },
             ),
@@ -129,20 +134,38 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
               ),
             ),
             TextFormField(
-              initialValue: 'InvoiceXYZ0020.pdf',
+              enabled: false,
+              controller: fileNameController,
               decoration: const InputDecoration(
                 labelText: 'Attachment',
                 contentPadding: EdgeInsets.all(10),
               ),
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  final userID = FirebaseAuth.instance.currentUser?.uid;
+                  await FirebaseStorage.instance
+                      .ref(
+                          'invoices/$userID/${widget.invoiceModel.id}/$fileName')
+                      .delete();
+                  _setFileName('');
+                },
+                child: const Text('delete file'))
           ],
         ),
       ),
     );
   }
 
-  void calculateGross() {
+  void _calculateGross() {
     gross = net + (net * (vat / 100));
     grossController.text = gross.toStringAsFixed(2);
+  }
+
+  void _setFileName(String name) {
+    setState(() {
+      fileName = name;
+      fileNameController.text = name;
+    });
   }
 }
