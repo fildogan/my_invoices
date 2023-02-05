@@ -228,6 +228,42 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                         return null;
                       },
                     ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: 'Fill in the form and press the save ',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color)),
+                              const WidgetSpan(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 2.0),
+                                  child: Icon(Icons.save),
+                                ),
+                              ),
+                              TextSpan(
+                                  text: ' button to add invoice',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
