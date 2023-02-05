@@ -299,11 +299,12 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                             .doc(userID)
                             .collection('invoices')
                             .doc(widget.invoiceModel.id)
-                            .update({'is_file_attached': false});
+                            .update(
+                                {'is_file_attached': false, 'file_name': ''});
                         setState(() {
                           isFileAttached = false;
                         });
-                        _setFileName('');
+                        _setFileName('Press to choose file');
                       },
                       child: const Text('delete file')),
                 )
