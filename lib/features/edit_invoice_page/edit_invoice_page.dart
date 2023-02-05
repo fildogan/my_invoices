@@ -28,7 +28,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   late int vat;
   late double gross;
   late String fileName;
-  bool isfileDeleted = false;
+  late bool isFileAttached;
 
   Uint8List? fileBytes;
   TextEditingController grossController = TextEditingController();
@@ -44,6 +44,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
       vat = widget.invoiceModel.vat;
       gross = double.parse(widget.invoiceModel.gross);
       fileName = widget.invoiceModel.fileName;
+      isFileAttached = widget.invoiceModel.isFileAttached;
       _calculateGross();
       _setFileName(fileName);
     });
@@ -54,7 +55,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return !isfileDeleted;
+        return isFileAttached;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -78,9 +79,10 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                       'net': net,
                       'vat': vat,
                       'gross': gross.toStringAsFixed(2),
-                      'file_name': fileName
+                      'file_name': fileName,
+                      'is_file_attached': true
                     });
-                    if (isfileDeleted) {
+                    if (!isFileAttached) {
                       await FirebaseStorage.instance
                           .ref(
                               'invoices/$userID/${widget.invoiceModel.id}/$fileName')
@@ -96,7 +98,8 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                             net: net,
                             vat: vat,
                             gross: gross.toStringAsFixed(2),
-                            fileName: fileName));
+                            fileName: fileName,
+                            isFileAttached: true));
                   }
                 },
                 icon: const Icon(
@@ -255,7 +258,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                   focusNode: AlwaysDisabledFocusNode(),
                   controller: fileNameController,
                   onTap: () {
-                    if (isfileDeleted) {
+                    if (!isFileAttached) {
                       _pickFiles();
                     }
                   },
@@ -291,8 +294,14 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                             .ref(
                                 'invoices/$userID/${widget.invoiceModel.id}/$fileName')
                             .delete();
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(userID)
+                            .collection('invoices')
+                            .doc(widget.invoiceModel.id)
+                            .update({'is_file_attached': false});
                         setState(() {
-                          isfileDeleted = true;
+                          isFileAttached = false;
                         });
                         _setFileName('');
                       },

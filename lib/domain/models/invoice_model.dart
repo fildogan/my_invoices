@@ -14,6 +14,7 @@ class InvoiceModel with _$InvoiceModel {
     required int vat,
     required String gross,
     required String fileName,
+    required bool isFileAttached,
   }) = _InvoiceModel;
   const InvoiceModel._();
 }

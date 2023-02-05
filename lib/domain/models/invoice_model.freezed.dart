@@ -23,6 +23,7 @@ mixin _$InvoiceModel {
   int get vat => throw _privateConstructorUsedError;
   String get gross => throw _privateConstructorUsedError;
   String get fileName => throw _privateConstructorUsedError;
+  bool get isFileAttached => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InvoiceModelCopyWith<InvoiceModel> get copyWith =>
@@ -42,7 +43,8 @@ abstract class $InvoiceModelCopyWith<$Res> {
       double net,
       int vat,
       String gross,
-      String fileName});
+      String fileName,
+      bool isFileAttached});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
     Object? vat = null,
     Object? gross = null,
     Object? fileName = null,
+    Object? isFileAttached = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -95,6 +98,10 @@ class _$InvoiceModelCopyWithImpl<$Res, $Val extends InvoiceModel>
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
               as String,
+      isFileAttached: null == isFileAttached
+          ? _value.isFileAttached
+          : isFileAttached // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -114,7 +121,8 @@ abstract class _$$_InvoiceModelCopyWith<$Res>
       double net,
       int vat,
       String gross,
-      String fileName});
+      String fileName,
+      bool isFileAttached});
 }
 
 /// @nodoc
@@ -135,6 +143,7 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
     Object? vat = null,
     Object? gross = null,
     Object? fileName = null,
+    Object? isFileAttached = null,
   }) {
     return _then(_$_InvoiceModel(
       id: null == id
@@ -165,6 +174,10 @@ class __$$_InvoiceModelCopyWithImpl<$Res>
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
               as String,
+      isFileAttached: null == isFileAttached
+          ? _value.isFileAttached
+          : isFileAttached // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -179,7 +192,8 @@ class _$_InvoiceModel extends _InvoiceModel {
       required this.net,
       required this.vat,
       required this.gross,
-      required this.fileName})
+      required this.fileName,
+      required this.isFileAttached})
       : super._();
 
   @override
@@ -196,10 +210,12 @@ class _$_InvoiceModel extends _InvoiceModel {
   final String gross;
   @override
   final String fileName;
+  @override
+  final bool isFileAttached;
 
   @override
   String toString() {
-    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat, gross: $gross, fileName: $fileName)';
+    return 'InvoiceModel(id: $id, title: $title, contrahent: $contrahent, net: $net, vat: $vat, gross: $gross, fileName: $fileName, isFileAttached: $isFileAttached)';
   }
 
   @override
@@ -215,12 +231,14 @@ class _$_InvoiceModel extends _InvoiceModel {
             (identical(other.vat, vat) || other.vat == vat) &&
             (identical(other.gross, gross) || other.gross == gross) &&
             (identical(other.fileName, fileName) ||
-                other.fileName == fileName));
+                other.fileName == fileName) &&
+            (identical(other.isFileAttached, isFileAttached) ||
+                other.isFileAttached == isFileAttached));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, contrahent, net, vat, gross, fileName);
+  int get hashCode => Object.hash(runtimeType, id, title, contrahent, net, vat,
+      gross, fileName, isFileAttached);
 
   @JsonKey(ignore: true)
   @override
@@ -237,7 +255,8 @@ abstract class _InvoiceModel extends InvoiceModel {
       required final double net,
       required final int vat,
       required final String gross,
-      required final String fileName}) = _$_InvoiceModel;
+      required final String fileName,
+      required final bool isFileAttached}) = _$_InvoiceModel;
   const _InvoiceModel._() : super._();
 
   @override
@@ -254,6 +273,8 @@ abstract class _InvoiceModel extends InvoiceModel {
   String get gross;
   @override
   String get fileName;
+  @override
+  bool get isFileAttached;
   @override
   @JsonKey(ignore: true)
   _$$_InvoiceModelCopyWith<_$_InvoiceModel> get copyWith =>

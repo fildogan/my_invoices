@@ -55,7 +55,8 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
                     'net': net,
                     'vat': vat,
                     'gross': gross.toStringAsFixed(2),
-                    'file_name': fileName
+                    'file_name': fileName,
+                    'is_file_attached': true
                   }).then((value) {
                     setState(() {
                       invoiceId = value.id;
