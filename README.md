@@ -15,11 +15,10 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 ## App preview
 
 ### Home Page:
-<img src="https://raw.githubusercontent.com/fildogan/AppScreenshots/main/MyInvoices/1.1.1/HomePage.png?token=GHSAT0AAAAAAB3VHH32ZGQTOOKKPEMW2NDGY7ABHGQ"  width=25% height=50%>
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/HomePage.png"  width=25% height=50%>
 
-### App features:
 ### Navigation Menu: 
-<img src="https://raw.githubusercontent.com/fildogan/AppScreenshots/main/MyInvoices/1.1.1/Menu.png?token=GHSAT0AAAAAAB3VHH3377C7LAU2CECTLBNYY7ABIFA"  width=25% height=50%>
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/Menu.png"  width=25% height=50%>
 
 ### Add Invoice Page:
 <img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/AddInvoicePage.png"  width=25% height=50%>
@@ -38,5 +37,3 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 
 ### Edit Invoice Page:
 <img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/EditInvoicePage.png"  width=25% height=50%>
-
-
