@@ -20,64 +20,78 @@ class InvoiceListPage extends StatelessWidget {
         title: const Text('Invoices'),
       ),
       drawer: const MenuDrawer(),
-      body: SafeArea(
-        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(userID)
-                .collection('invoices')
-                .orderBy('title')
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(child: Text('Something went wrong'));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final invoices = snapshot.data!.docs.map(
-                (doc) {
-                  return InvoiceModel(
-                    id: doc.id,
-                    title: doc['title'].toString(),
-                    contrahent: doc['contrahent'].toString(),
-                    net: doc.data().toString().contains('net')
-                        ? double.parse(doc['net'].toString())
-                        : 0.00,
-                    vat: doc.data().toString().contains('vat')
-                        ? int.parse(doc['vat'].toString())
-                        : 0,
-                    gross: doc['gross'].toString(),
-                    fileName: doc['file_name'].toString(),
-                    isFileAttached: doc['is_file_attached'],
-                  );
-                },
-              ).toList();
-              if (invoices.isEmpty) {
-                return Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(children: [
+        Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Image.asset(
+                'assets/images/background1.jpg',
+                opacity: const AlwaysStoppedAnimation(.3),
+              ),
+            ],
+          ),
+        ),
+        SafeArea(
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userID)
+                  .collection('invoices')
+                  .orderBy('title')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final invoices = snapshot.data!.docs.map(
+                  (doc) {
+                    return InvoiceModel(
+                      id: doc.id,
+                      title: doc['title'].toString(),
+                      contrahent: doc['contrahent'].toString(),
+                      net: doc.data().toString().contains('net')
+                          ? double.parse(doc['net'].toString())
+                          : 0.00,
+                      vat: doc.data().toString().contains('vat')
+                          ? int.parse(doc['vat'].toString())
+                          : 0,
+                      gross: doc['gross'].toString(),
+                      fileName: doc['file_name'].toString(),
+                      isFileAttached: doc['is_file_attached'],
+                    );
+                  },
+                ).toList();
+                if (invoices.isEmpty) {
+                  return Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/my_invoices_logo.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                      const Text('No invoices added yet...'),
+                    ],
+                  ));
+                }
+                return ListView(
                   children: [
-                    Image.asset(
-                      'assets/images/my_invoices_logo.png',
-                      width: 100,
-                      height: 100,
-                    ),
-                    const Text('No invoices added yet...'),
+                    for (final invoice in invoices) ...[
+                      InvoiceTile(
+                        invoiceModel: invoice,
+                      )
+                    ]
                   ],
-                ));
-              }
-              return ListView(
-                children: [
-                  for (final invoice in invoices) ...[
-                    InvoiceTile(
-                      invoiceModel: invoice,
-                    )
-                  ]
-                ],
-              );
-            }),
-      ),
+                );
+              }),
+        ),
+      ]),
     );
   }
 }
