@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:moje_faktury/app/core/config.dart';
 import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
 import 'package:moje_faktury/features/auth/user_profile.dart';
+import 'package:moje_faktury/features/home_page/home_page.dart';
 import 'package:moje_faktury/features/invoice_list/invoice_list_page.dart';
+import 'package:moje_faktury/features/settings_page/settings_page.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
@@ -49,8 +51,9 @@ class MenuDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onTap: () {
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //     builder: (context) => const UserProfile()));
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const HomePage()));
                   },
                 ),
                 const Divider(),
@@ -64,7 +67,8 @@ class MenuDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const AddInvoicePage()));
                   },
                 ),
@@ -78,7 +82,8 @@ class MenuDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const InvoiceListPage()));
                   },
                 ),
@@ -93,7 +98,8 @@ class MenuDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const UserProfile()));
                   },
                 ),
@@ -107,8 +113,9 @@ class MenuDrawer extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   onTap: () {
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //     builder: (context) => const UserProfile()));
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SettingsPage()));
                   },
                 ),
               ],
