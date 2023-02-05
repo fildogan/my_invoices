@@ -333,14 +333,14 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
   }
 
   Future<void> _addInvoice() async {
-    setState(() {
-      isLoading = true;
-    });
     final userID = FirebaseAuth.instance.currentUser?.uid;
     if (userID == null) {
       throw Exception('User is not logged in');
     }
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userID)
