@@ -242,20 +242,20 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                         ),
                         validator: (val) {
                           if (val == null) {
-                            return 'Pick a file1';
+                            return 'Pick a file';
                           }
                           if (!val.isNotEmpty) {
-                            return 'Pick a file2';
+                            return 'Pick a file';
                           }
                           if (val == '') {
-                            return 'Pick a file3';
+                            return 'Pick a file';
                           }
                           if (fileName == '') {
-                            return 'Pick a file4';
+                            return 'Pick a file';
                           }
-                          // if (fileBytes == null) {
-                          //   return 'Pick a fle5';
-                          // }
+                          if (fileName == 'Press to choose file') {
+                            return 'Pick a file';
+                          }
                           return null;
                         },
                       ),
@@ -335,14 +335,14 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
   }
 
   Future<void> _updateInvoice() async {
-    setState(() {
-      isLoading = true;
-    });
     final userID = FirebaseAuth.instance.currentUser?.uid;
     if (userID == null) {
       throw Exception('User is not logged in');
     }
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userID)
@@ -362,7 +362,6 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
             .ref('invoices/$userID/${widget.invoiceModel.id}/$fileName')
             .putData(fileBytes!);
       }
-
       Navigator.pop(
           context,
           InvoiceModel(
