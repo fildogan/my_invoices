@@ -1,6 +1,4 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/app/core/app_data.dart';
 import 'package:moje_faktury/app/core/config.dart';
 import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
 import 'package:moje_faktury/features/auth/user_profile.dart';
@@ -43,6 +41,21 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(
+                    Icons.home,
+                    size: 24,
+                  ),
+                  title: const Text(
+                    'Home',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //     builder: (context) => const UserProfile()));
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(
                     Icons.note_add,
                     size: 24,
                   ),
@@ -69,6 +82,7 @@ class MenuDrawer extends StatelessWidget {
                         builder: (context) => const InvoiceListPage()));
                   },
                 ),
+                const Divider(),
                 ListTile(
                   leading: const Icon(
                     Icons.person,
@@ -81,6 +95,20 @@ class MenuDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const UserProfile()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.settings,
+                    size: 24,
+                  ),
+                  title: const Text(
+                    'Settings',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //     builder: (context) => const UserProfile()));
                   },
                 ),
               ],
