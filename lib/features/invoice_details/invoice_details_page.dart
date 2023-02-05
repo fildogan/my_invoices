@@ -107,16 +107,18 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: ElevatedButton(
-                onPressed: () async {
-                  final userID = FirebaseAuth.instance.currentUser?.uid;
+                onPressed: currentInvoice.isFileAttached
+                    ? () async {
+                        final userID = FirebaseAuth.instance.currentUser?.uid;
 
-                  final url =
-                      'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
-                  final file = await PDFApi.loadFirebase(url);
-                  if (file != null) {
-                    openPDF(context, file);
-                  }
-                },
+                        final url =
+                            'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
+                        final file = await PDFApi.loadFirebase(url);
+                        if (file != null) {
+                          openPDF(context, file);
+                        }
+                      }
+                    : null,
                 child: const Text('View pdf file'),
               ),
             )
@@ -156,7 +158,11 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
       netController.text = newInvoice.net.toStringAsFixed(2);
       vatController.text = '${newInvoice.vat.toString()}%';
       grossController.text = newInvoice.gross;
-      fileNameController.text = newInvoice.fileName;
+      if (newInvoice.isFileAttached) {
+        fileNameController.text = newInvoice.fileName;
+      } else {
+        fileNameController.text = 'No files attached';
+      }
     });
   }
 }
