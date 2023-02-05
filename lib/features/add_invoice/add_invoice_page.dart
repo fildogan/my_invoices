@@ -336,13 +336,13 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
           .ref('invoices/$userID/$invoiceId/$fileName')
           .putData(fileBytes!);
       _clearValues();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      setState(() {
+        isLoading = false;
+      });
     }
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    setState(() {
-      isLoading = false;
-    });
   }
 }
 
