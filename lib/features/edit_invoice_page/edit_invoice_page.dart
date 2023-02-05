@@ -62,46 +62,7 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
           title: Text('Edit ${widget.invoiceModel.title}'),
           actions: [
             IconButton(
-                onPressed: () async {
-                  final userID = FirebaseAuth.instance.currentUser?.uid;
-                  if (userID == null) {
-                    throw Exception('User is not logged in');
-                  }
-                  if (_formKey.currentState!.validate()) {
-                    await FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(userID)
-                        .collection('invoices')
-                        .doc(widget.invoiceModel.id)
-                        .update({
-                      'title': title,
-                      'contrahent': contrahent,
-                      'net': net,
-                      'vat': vat,
-                      'gross': gross.toStringAsFixed(2),
-                      'file_name': fileName,
-                      'is_file_attached': true
-                    });
-                    if (!isFileAttached) {
-                      await FirebaseStorage.instance
-                          .ref(
-                              'invoices/$userID/${widget.invoiceModel.id}/$fileName')
-                          .putData(fileBytes!);
-                    }
-
-                    Navigator.pop(
-                        context,
-                        InvoiceModel(
-                            id: widget.invoiceModel.id,
-                            title: title,
-                            contrahent: contrahent,
-                            net: net,
-                            vat: vat,
-                            gross: gross.toStringAsFixed(2),
-                            fileName: fileName,
-                            isFileAttached: true));
-                  }
-                },
+                onPressed: _updateInvoice,
                 icon: const Icon(
                   Icons.save,
                 ))
@@ -354,6 +315,46 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
       _setFileName(file.name);
 
       _setFileBytes(file.bytes!);
+    }
+  }
+
+  Future<void> _updateInvoice() async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    if (_formKey.currentState!.validate()) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('invoices')
+          .doc(widget.invoiceModel.id)
+          .update({
+        'title': title,
+        'contrahent': contrahent,
+        'net': net,
+        'vat': vat,
+        'gross': gross.toStringAsFixed(2),
+        'file_name': fileName,
+        'is_file_attached': true
+      });
+      if (!isFileAttached) {
+        await FirebaseStorage.instance
+            .ref('invoices/$userID/${widget.invoiceModel.id}/$fileName')
+            .putData(fileBytes!);
+      }
+
+      Navigator.pop(
+          context,
+          InvoiceModel(
+              id: widget.invoiceModel.id,
+              title: title,
+              contrahent: contrahent,
+              net: net,
+              vat: vat,
+              gross: gross.toStringAsFixed(2),
+              fileName: fileName,
+              isFileAttached: true));
     }
   }
 }

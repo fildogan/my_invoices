@@ -39,35 +39,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
         title: const Text('Add invoice'),
         actions: [
           IconButton(
-              onPressed: () async {
-                final userID = FirebaseAuth.instance.currentUser?.uid;
-                if (userID == null) {
-                  throw Exception('User is not logged in');
-                }
-                if (_formKey.currentState!.validate()) {
-                  await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(userID)
-                      .collection('invoices')
-                      .add({
-                    'title': title,
-                    'contrahent': contrahent,
-                    'net': net,
-                    'vat': vat,
-                    'gross': gross.toStringAsFixed(2),
-                    'file_name': fileName,
-                    'is_file_attached': true
-                  }).then((value) {
-                    setState(() {
-                      invoiceId = value.id;
-                    });
-                  });
-                  await FirebaseStorage.instance
-                      .ref('invoices/$userID/$invoiceId/$fileName')
-                      .putData(fileBytes!);
-                  _clearValues();
-                }
-              },
+              onPressed: _addInvoice,
               icon: const Icon(
                 Icons.save,
               ))
@@ -308,6 +280,36 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
       _setFileName(file.name);
 
       _setFileBytes(file.bytes!);
+    }
+  }
+
+  Future<void> _addInvoice() async {
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    if (userID == null) {
+      throw Exception('User is not logged in');
+    }
+    if (_formKey.currentState!.validate()) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .collection('invoices')
+          .add({
+        'title': title,
+        'contrahent': contrahent,
+        'net': net,
+        'vat': vat,
+        'gross': gross.toStringAsFixed(2),
+        'file_name': fileName,
+        'is_file_attached': true
+      }).then((value) {
+        setState(() {
+          invoiceId = value.id;
+        });
+      });
+      await FirebaseStorage.instance
+          .ref('invoices/$userID/$invoiceId/$fileName')
+          .putData(fileBytes!);
+      _clearValues();
     }
   }
 }
