@@ -1,4 +1,6 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moje_faktury/app/core/app_data.dart';
 import 'package:moje_faktury/app/core/config.dart';
 import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
 import 'package:moje_faktury/features/auth/user_profile.dart';
@@ -11,103 +13,90 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Drawer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 80,
-                    child: DrawerHeader(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InkWell(
-                                onTap: () => Navigator.of(context).pop(),
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  size: 30,
-                                )),
-                            const Expanded(
-                              child: Text(
-                                'Main menu',
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
-                            Image.asset(
-                              'assets/images/my_invoices_logo.png',
-                              height: 70,
-                              width: 70,
-                            )
-                          ],
-                        )),
+    return Drawer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 200,
+                  child: DrawerHeader(
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                'assets/images/background1.jpg',
+                              ))),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/my_invoices_logo.png',
+                            height: 100,
+                          )
+                        ],
+                      )),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.note_add,
+                    size: 24,
                   ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.note_add,
-                      size: 24,
-                    ),
-                    title: const Text(
-                      'Add invoice',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddInvoicePage()));
-                    },
+                  title: const Text(
+                    'Add invoice',
+                    style: TextStyle(fontSize: 18),
                   ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.list,
-                      size: 24,
-                    ),
-                    title: const Text(
-                      'List of invoices',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const InvoiceListPage()));
-                    },
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const AddInvoicePage()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.list,
+                    size: 24,
                   ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.person,
-                      size: 24,
-                    ),
-                    title: const Text(
-                      'Account',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UserProfile()));
-                    },
+                  title: const Text(
+                    'List of invoices',
+                    style: TextStyle(fontSize: 18),
                   ),
-                ],
-              ),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const InvoiceListPage()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.person,
+                    size: 24,
+                  ),
+                  title: const Text(
+                    'Account',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const UserProfile()));
+                  },
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
                   Text(Config.versionMessage),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
