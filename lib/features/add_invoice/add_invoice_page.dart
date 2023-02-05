@@ -47,226 +47,242 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
         ],
       ),
       drawer: const MenuDrawer(),
-      body: SafeArea(
-        child: isLoading
-            ? Center(
-                child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text('Adding invoice, please wait...')
-                ],
-              ))
-            : Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    TextFormField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Invoice no.',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      onChanged: (newValue) {
-                        setState(() {
-                          title = newValue;
-                        });
-                      },
-                      validator: (val) {
-                        if (val == null) {
-                          return 'Must not be empty';
-                        }
-                        if (!val.isNotEmpty) {
-                          return 'Must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: contrahentController,
-                      decoration: const InputDecoration(
-                        labelText: 'Contrahent',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      onChanged: (newValue) {
-                        setState(() {
-                          contrahent = newValue;
-                        });
-                      },
-                      validator: (val) {
-                        if (val == null) {
-                          return 'Must not be empty';
-                        }
-                        if (!val.isNotEmpty) {
-                          return 'Must not be empty';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: netController,
-                      decoration: const InputDecoration(
-                        labelText: 'Net amount',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      onChanged: (newValue) {
-                        setState(() {
-                          net = double.parse(newValue);
-                          _calculateGross();
-                        });
-                      },
-                      validator: (val) {
-                        if (val == null) {
-                          return 'Must not be empty';
-                        }
-                        if (!val.isNotEmpty) {
-                          return 'Must not be empty';
-                        }
-                        if (!val.isGreaterThanZero) {
-                          return 'Must be greater than 0';
-                        }
-                        return null;
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,2}'),
-                        ),
-                      ],
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                    ),
-                    DropdownButtonFormField<int>(
-                      value: vat,
-                      decoration: const InputDecoration(
-                        labelText: 'VAT rate',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      validator: (val) {
-                        if (vat == null) {
-                          return 'Choose from list';
-                        }
-                        if (val == null) {
-                          return 'Must not be empty';
-                        }
-                        if (!val.toString().isNotEmpty) {
-                          return 'Must not be empty';
-                        }
-                        return null;
-                      },
-                      items: const [
-                        DropdownMenuItem(
-                          value: 0,
-                          child: Text(
-                            '0%',
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: 7,
-                          child: Text(
-                            '7%',
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: 23,
-                          child: Text(
-                            '23%',
-                          ),
-                        ),
-                      ],
-                      onChanged: (newValue) {
-                        setState(() {
-                          vat = newValue ?? vat;
-                          _calculateGross();
-                        });
-                      },
-                    ),
-                    TextFormField(
-                      enableInteractiveSelection: false,
-                      focusNode: AlwaysDisabledFocusNode(),
-                      controller: grossController,
-                      decoration: const InputDecoration(
-                        labelText: 'Gross amount',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      validator: (val) {
-                        if (val == null) {
-                          return 'Net value must not be empty';
-                        }
-                        if (!val.isNotEmpty) {
-                          return 'Net value must not be empty';
-                        }
-                        if (!val.isGreaterThanZero) {
-                          return 'Net value must be greater than 0';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      enableInteractiveSelection: false,
-                      focusNode: AlwaysDisabledFocusNode(),
-                      controller: fileNameController,
-                      onTap: () {
-                        _pickFiles();
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Attachment',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                      validator: (val) {
-                        if (val == null) {
-                          return 'Pick a fle';
-                        }
-                        if (!val.isNotEmpty) {
-                          return 'Pick a fle';
-                        }
-                        if (fileBytes == null) {
-                          return 'Pick a fle';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: 'Fill in the form and press the save ',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color)),
-                              const WidgetSpan(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 2.0),
-                                  child: Icon(Icons.save),
-                                ),
-                              ),
-                              TextSpan(
-                                  text: ' button to add invoice',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.asset(
+                  'assets/images/background1.jpg',
                 ),
-              ),
+              ],
+            ),
+          ),
+          SafeArea(
+            child: isLoading
+                ? Center(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text('Adding invoice, please wait...')
+                    ],
+                  ))
+                : Form(
+                    key: _formKey,
+                    child: ListView(
+                      children: [
+                        TextFormField(
+                          controller: titleController,
+                          decoration: const InputDecoration(
+                            labelText: 'Invoice no.',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          onChanged: (newValue) {
+                            setState(() {
+                              title = newValue;
+                            });
+                          },
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Must not be empty';
+                            }
+                            if (!val.isNotEmpty) {
+                              return 'Must not be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: contrahentController,
+                          decoration: const InputDecoration(
+                            labelText: 'Contrahent',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          onChanged: (newValue) {
+                            setState(() {
+                              contrahent = newValue;
+                            });
+                          },
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Must not be empty';
+                            }
+                            if (!val.isNotEmpty) {
+                              return 'Must not be empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: netController,
+                          decoration: const InputDecoration(
+                            labelText: 'Net amount',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          onChanged: (newValue) {
+                            setState(() {
+                              net = double.parse(newValue);
+                              _calculateGross();
+                            });
+                          },
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Must not be empty';
+                            }
+                            if (!val.isNotEmpty) {
+                              return 'Must not be empty';
+                            }
+                            if (!val.isGreaterThanZero) {
+                              return 'Must be greater than 0';
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d*\.?\d{0,2}'),
+                            ),
+                          ],
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                        ),
+                        DropdownButtonFormField<int>(
+                          value: vat,
+                          decoration: const InputDecoration(
+                            labelText: 'VAT rate',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          validator: (val) {
+                            if (vat == null) {
+                              return 'Choose from list';
+                            }
+                            if (val == null) {
+                              return 'Must not be empty';
+                            }
+                            if (!val.toString().isNotEmpty) {
+                              return 'Must not be empty';
+                            }
+                            return null;
+                          },
+                          items: const [
+                            DropdownMenuItem(
+                              value: 0,
+                              child: Text(
+                                '0%',
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 7,
+                              child: Text(
+                                '7%',
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 23,
+                              child: Text(
+                                '23%',
+                              ),
+                            ),
+                          ],
+                          onChanged: (newValue) {
+                            setState(() {
+                              vat = newValue ?? vat;
+                              _calculateGross();
+                            });
+                          },
+                        ),
+                        TextFormField(
+                          enableInteractiveSelection: false,
+                          focusNode: AlwaysDisabledFocusNode(),
+                          controller: grossController,
+                          decoration: const InputDecoration(
+                            labelText: 'Gross amount',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Net value must not be empty';
+                            }
+                            if (!val.isNotEmpty) {
+                              return 'Net value must not be empty';
+                            }
+                            if (!val.isGreaterThanZero) {
+                              return 'Net value must be greater than 0';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          enableInteractiveSelection: false,
+                          focusNode: AlwaysDisabledFocusNode(),
+                          controller: fileNameController,
+                          onTap: () {
+                            _pickFiles();
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Attachment',
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Pick a fle';
+                            }
+                            if (!val.isNotEmpty) {
+                              return 'Pick a fle';
+                            }
+                            if (fileBytes == null) {
+                              return 'Pick a fle';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text:
+                                          'Fill in the form and press the save ',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.color)),
+                                  const WidgetSpan(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 2.0),
+                                      child: Icon(Icons.save),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text: ' button to add invoice',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.color)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }

@@ -53,77 +53,102 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
               ))
         ],
       ),
-      body: SafeArea(
-        child: ListView(
-          children: [
-            TextFormField(
-              controller: titleController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Invoice no.',
-                contentPadding: EdgeInsets.all(10),
-              ),
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image.asset(
+                  'assets/images/background1.jpg',
+                ),
+              ],
             ),
-            TextFormField(
-              controller: contrahentController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Contrahent',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            TextFormField(
-              controller: netController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Net amount',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            TextFormField(
-              controller: vatController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'VAT rate',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            TextFormField(
-              controller: grossController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Gross amount',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            TextFormField(
-              controller: fileNameController,
-              enabled: false,
-              decoration: const InputDecoration(
-                labelText: 'Attachment',
-                contentPadding: EdgeInsets.all(10),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: ElevatedButton(
-                onPressed: currentInvoice.isFileAttached
-                    ? () async {
-                        final userID = FirebaseAuth.instance.currentUser?.uid;
+          ),
+          SafeArea(
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Invoice no.',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                TextFormField(
+                  controller: contrahentController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Contrahent',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                TextFormField(
+                  controller: netController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Net amount',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                TextFormField(
+                  controller: vatController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'VAT rate',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                TextFormField(
+                  controller: grossController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Gross amount',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                TextFormField(
+                  controller: fileNameController,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Attachment',
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: ElevatedButton(
+                    onPressed: currentInvoice.isFileAttached
+                        ? () async {
+                            final userID =
+                                FirebaseAuth.instance.currentUser?.uid;
 
-                        final url =
-                            'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
-                        final file = await PDFApi.loadFirebase(url);
-                        if (file != null) {
-                          openPDF(context, file);
-                        }
-                      }
-                    : null,
-                child: const Text('View pdf file'),
-              ),
-            )
-          ],
-        ),
+                            final url =
+                                'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
+                            final file = await PDFApi.loadFirebase(url);
+                            if (file != null) {
+                              openPDF(context, file);
+                            }
+                          }
+                        : null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.file_open),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('View pdf file'),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
