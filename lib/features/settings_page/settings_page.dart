@@ -61,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     flex: 2,
                   ),
                   const Text(
-                    'Designed & Created by:',
+                    'Designed & Developed by:',
                     textAlign: TextAlign.center,
                   ),
                   const Text(
