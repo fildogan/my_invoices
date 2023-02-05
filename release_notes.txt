@@ -1,0 +1,6 @@
+1.1.1
+
+- Bug fixes
+- Home page added
+- Settings page added
+- Snackbar messages added

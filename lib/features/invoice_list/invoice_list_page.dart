@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:moje_faktury/app/core/enums.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/invoice_details/invoice_details_page.dart';
+import 'package:moje_faktury/features/global_widgets/background_faded.dart';
+import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
+import 'package:moje_faktury/features/invoice_list/widgets/empty_list_screen.dart';
+import 'package:moje_faktury/features/invoice_list/widgets/invoice_list_view.dart';
 import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
 
 class InvoiceListPage extends StatefulWidget {
@@ -39,18 +41,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       drawer: const MenuDrawer(),
       body: Stack(
         children: [
-          Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(
-                  'assets/images/background1.jpg',
-                  opacity: const AlwaysStoppedAnimation(.3),
-                ),
-              ],
-            ),
-          ),
+          const BackgroundFaded(),
           SafeArea(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: FirebaseFirestore.instance
@@ -64,7 +55,8 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                   return const Center(child: Text('Something went wrong'));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const LoadingScreen(
+                      'Please wait, loading invoices...');
                 }
                 final invoices = snapshot.data!.docs.map(
                   (doc) {
@@ -85,51 +77,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                   },
                 ).toList();
                 if (invoices.isEmpty) {
-                  return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/my_invoices_logo.png',
-                        width: 100,
-                        height: 100,
-                      ),
-                      const Text('No invoices added yet...'),
-                    ],
-                  ));
+                  return const ListEmpty();
                 }
-                return ListView.builder(
-                  itemCount: invoices.length,
-                  itemBuilder: (context, index) {
-                    if (sortedBy == SortedBy.titleDescending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice1.title.compareTo(invoice2.title));
-                    } else if (sortedBy == SortedBy.titleAscending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice2.title.compareTo(invoice1.title));
-                    } else if (sortedBy == SortedBy.contrahentDescending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice1.contrahent.compareTo(invoice2.contrahent));
-                    } else if (sortedBy == SortedBy.contrahentAscending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice2.contrahent.compareTo(invoice1.contrahent));
-                    } else if (sortedBy == SortedBy.netDescending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice2.net.compareTo(invoice1.net));
-                    } else if (sortedBy == SortedBy.netAscending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice1.net.compareTo(invoice2.net));
-                    } else if (sortedBy == SortedBy.grossDescending) {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice1.gross.compareTo(invoice2.gross));
-                    } else {
-                      invoices.sort((invoice1, invoice2) =>
-                          invoice2.gross.compareTo(invoice1.gross));
-                    }
-                    final invoice = invoices[index];
-                    return InvoiceTile(invoiceModel: invoice);
-                  },
-                );
+                return InvoiceListView(invoices: invoices, sortedBy: sortedBy);
               },
             ),
           ),
@@ -263,94 +213,6 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
           ],
         );
       },
-    );
-  }
-}
-
-class InvoiceTile extends StatelessWidget {
-  const InvoiceTile({
-    super.key,
-    required this.invoiceModel,
-  });
-
-  final InvoiceModel invoiceModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => InvoiceDetailsPage(
-                      invoiceModel: invoiceModel,
-                    )));
-      },
-      child: Dismissible(
-        key: ValueKey(invoiceModel.id),
-        onDismissed: (direction) async {
-          final userID = FirebaseAuth.instance.currentUser?.uid;
-          if (userID == null) {
-            throw Exception('User is not logged in');
-          }
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userID)
-              .collection('invoices')
-              .doc(invoiceModel.id)
-              .delete();
-          await FirebaseStorage.instance
-              .ref(
-                  'invoices/$userID/${invoiceModel.id}/${invoiceModel.fileName}')
-              .delete();
-        },
-        direction: DismissDirection.endToStart,
-        confirmDismiss: (direction) {
-          return showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Delete invoice ${invoiceModel.title}?'),
-                content: const Text(
-                  'This action is irreversible.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text('Yes'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('No'),
-                  )
-                ],
-              );
-            },
-          );
-        },
-        background: Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 20),
-          color: Colors.red,
-          child: const Icon(Icons.delete, color: Colors.white),
-        ),
-        child: ListTile(
-          title: Text(invoiceModel.title),
-          subtitle: Text(invoiceModel.contrahent),
-          leading: const Icon(
-            Icons.description,
-            size: 40,
-          ),
-          trailing: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('NET: ${invoiceModel.net.toStringAsFixed(2)} PLN'),
-              Text('VAT: ${invoiceModel.vat}%'),
-              Text('GROSS: ${invoiceModel.gross} PLN'),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

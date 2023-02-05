@@ -1,16 +1,39 @@
-# moje_faktury
+# My Invoices
 
-A new Flutter project.
+A Flutter app for storing invoices. 
 
-## Getting Started
+## Introduction & main goals
 
-This project is a starting point for a Flutter application.
+Welcome to MyInvoices, a simple invoice management app! The app is designed for storing, and managing invoices. The app also allows for easy uploading of PDF invoices, simply select the file from your device and it will be securely stored within the app for quick and convenient access at any time.
 
-A few resources to get you started if this is your first Flutter project:
+### Technologies used
+- Dart
+- Flutter 
+- Firebase Storage
+- Firestore Database
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## App preview
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Home Page:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/HomePage.png"  width=25% height=50%>
+
+### Navigation Menu: 
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/Menu.png"  width=25% height=50%>
+
+### Add Invoice Page:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/AddInvoicePage.png"  width=25% height=50%>
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/AddInvoicePageValidation.png"  width=25% height=50%>
+
+### Invoice List:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/InvoiceListEmpty.png"  width=25% height=50%>
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/InvoiceList.png"  width=25% height=50%>
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/InvoiceListSort.png"  width=25% height=50%>
+
+### Invoice Details Page:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/InvoiceDetails.png"  width=25% height=50%>
+
+### PDF Preview:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/PdfPreview.png"  width=25% height=50%>
+
+### Edit Invoice Page:
+<img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/EditInvoicePage.png"  width=25% height=50%>
