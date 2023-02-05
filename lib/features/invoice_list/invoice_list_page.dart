@@ -80,14 +80,19 @@ class InvoiceListPage extends StatelessWidget {
                     ],
                   ));
                 }
-                return ListView(
-                  children: [
-                    for (final invoice in invoices) ...[
-                      InvoiceTile(
-                        invoiceModel: invoice,
-                      )
-                    ]
-                  ],
+                return ListView.builder(
+                  itemCount: invoices.length,
+                  itemBuilder: (context, index) {
+                    final invoice = invoices[index];
+                    return InvoiceTile(invoiceModel: invoice);
+                  },
+                  // children: [
+                  //   for (final invoice in invoices) ...[
+                  //     InvoiceTile(
+                  //       invoiceModel: invoice,
+                  //     )
+                  //   ]
+                  // ],
                 );
               }),
         ),
