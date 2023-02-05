@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
+import 'package:moje_faktury/features/global_widgets/background_full.dart';
+import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
 import 'package:moje_faktury/utils/form_extensions.dart';
 
 class EditInvoicePage extends StatefulWidget {
@@ -71,30 +73,10 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
         ),
         body: Stack(
           children: [
-            Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.asset(
-                    'assets/images/background1.jpg',
-                  ),
-                ],
-              ),
-            ),
+            const BackgroundFullColor(),
             SafeArea(
               child: isLoading
-                  ? Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Text('Updating invoice, please wait...')
-                      ],
-                    ))
+                  ? const LoadingScreen('Updating invoice, please wait...')
                   : Form(
                       key: _formKey,
                       child: ListView(
@@ -180,9 +162,6 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                               contentPadding: EdgeInsets.all(10),
                             ),
                             validator: (val) {
-                              if (vat == null) {
-                                return 'Choose from list';
-                              }
                               if (val == null) {
                                 return 'Must not be empty';
                               }
@@ -271,6 +250,9 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
                               }
                               return null;
                             },
+                          ),
+                          const SizedBox(
+                            height: 20,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -389,17 +371,19 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
             .ref('invoices/$userID/${widget.invoiceModel.id}/$fileName')
             .putData(fileBytes!);
       }
-      Navigator.pop(
-          context,
-          InvoiceModel(
-              id: widget.invoiceModel.id,
-              title: title,
-              contrahent: contrahent,
-              net: net,
-              vat: vat,
-              gross: gross.toStringAsFixed(2),
-              fileName: fileName,
-              isFileAttached: true));
+      if (mounted) {
+        Navigator.pop(
+            context,
+            InvoiceModel(
+                id: widget.invoiceModel.id,
+                title: title,
+                contrahent: contrahent,
+                net: net,
+                vat: vat,
+                gross: gross.toStringAsFixed(2),
+                fileName: fileName,
+                isFileAttached: true));
+      }
     }
   }
 }

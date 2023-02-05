@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:moje_faktury/api/pdf_api.dart';
 import 'package:moje_faktury/domain/models/invoice_model.dart';
 import 'package:moje_faktury/features/edit_invoice_page/edit_invoice_page.dart';
+import 'package:moje_faktury/features/global_widgets/background_full.dart';
+import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
+import 'package:moje_faktury/features/invoice_details/widgets/my_text_form_field.dart';
 import 'package:moje_faktury/features/pdf_viewer/pdf_viewer_page.dart';
 
 class InvoiceDetailsPage extends StatefulWidget {
@@ -28,6 +31,7 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
   TextEditingController vatController = TextEditingController();
   TextEditingController grossController = TextEditingController();
   TextEditingController fileNameController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -45,108 +49,72 @@ class _InvoiceDetailsPageState extends State<InvoiceDetailsPage> {
         title: Text(currentInvoice.title),
         actions: [
           IconButton(
-              onPressed: () {
-                goToEditInvoicePage(currentInvoice);
-              },
-              icon: const Icon(
-                Icons.edit_document,
-              ))
+              onPressed: () => goToEditInvoicePage(currentInvoice),
+              icon: const Icon(Icons.edit_document))
         ],
       ),
       body: Stack(
         children: [
-          Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.asset(
-                  'assets/images/background1.jpg',
-                ),
-              ],
-            ),
-          ),
+          const BackgroundFullColor(),
           SafeArea(
-            child: ListView(
-              children: [
-                TextFormField(
-                  controller: titleController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Invoice no.',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                TextFormField(
-                  controller: contrahentController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Contrahent',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                TextFormField(
-                  controller: netController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Net amount',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                TextFormField(
-                  controller: vatController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'VAT rate',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                TextFormField(
-                  controller: grossController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Gross amount',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                TextFormField(
-                  controller: fileNameController,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Attachment',
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: ElevatedButton(
-                    onPressed: currentInvoice.isFileAttached
-                        ? () async {
-                            final userID =
-                                FirebaseAuth.instance.currentUser?.uid;
+            child: isLoading
+                ? const LoadingScreen('Loading file, please wait...')
+                : ListView(
+                    children: [
+                      MyTextFormField(
+                          title: 'Invoice no.',
+                          titleController: titleController),
+                      MyTextFormField(
+                          title: 'Contrahent',
+                          titleController: contrahentController),
+                      MyTextFormField(
+                          title: 'Net amount', titleController: netController),
+                      MyTextFormField(
+                          title: 'VAT rate', titleController: vatController),
+                      MyTextFormField(
+                          title: 'Gross amount',
+                          titleController: grossController),
+                      MyTextFormField(
+                          title: 'Attachment',
+                          titleController: fileNameController),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: ElevatedButton(
+                          onPressed: currentInvoice.isFileAttached || !isLoading
+                              ? () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                            final url =
-                                'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
-                            final file = await PDFApi.loadFirebase(url);
-                            if (file != null) {
-                              openPDF(context, file);
-                            }
-                          }
-                        : null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.file_open),
-                        SizedBox(
-                          width: 5,
+                                  final userID =
+                                      FirebaseAuth.instance.currentUser?.uid;
+                                  final url =
+                                      'invoices/$userID/${currentInvoice.id}/${currentInvoice.fileName}';
+                                  final file = await PDFApi.loadFirebase(url);
+                                  if (file != null) {
+                                    if (mounted) {
+                                      openPDF(context, file);
+                                    }
+
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                                }
+                              : null,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.file_open),
+                              SizedBox(width: 5),
+                              Text('View pdf file'),
+                            ],
+                          ),
                         ),
-                        Text('View pdf file'),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
           ),
         ],
       ),
