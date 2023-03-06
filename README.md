@@ -37,3 +37,26 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 
 ### Edit Invoice Page:
 <img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/EditInvoicePage.png"  width=25% height=50%>
+
+### Packages licenses:
+
+[cupertino_icons](https://pub.dev/packages/cupertino_icons/license)
+[firebase_core](https://pub.dev/packages/firebase_core/license)
+[firebase_auth](https://pub.dev/packages/firebase_auth/license)
+[cloud_firestore](https://pub.dev/packages/cloud_firestore/license)
+[firebase_ui_auth](https://pub.dev/packages/firebase_ui_auth/license)
+[freezed_annotation](https://pub.dev/packages/freezed_annotation/license)
+[firebase_storage](https://pub.dev/packages/firebase_storage/license)
+[file_picker](https://pub.dev/packages/file_picker/license)
+[flutter_pdfview](https://pub.dev/packages/flutter_pdfview/license)
+[path_provider](https://pub.dev/packages/path_provider/license)
+[provider](https://pub.dev/packages/provider/license)
+[path](https://pub.dev/packages/path/license)
+[flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons/license)
+[package_info_plus](https://pub.dev/packages/package_info_plus/license)
+[build_runner](https://pub.dev/packages/build_runner/license)
+[freezed](https://pub.dev/packages/freezed/license)
+
+
+
+
