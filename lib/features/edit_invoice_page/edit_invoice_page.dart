@@ -360,10 +360,10 @@ class _EditInvoicePageState extends State<EditInvoicePage> {
       _setFileName(file.name);
 
       _setFileBytes(file.bytes!);
-      setState(() {
-        isLoadingFile = false;
-      });
     }
+    setState(() {
+      isLoadingFile = false;
+    });
   }
 
   Future<void> _updateInvoice() async {

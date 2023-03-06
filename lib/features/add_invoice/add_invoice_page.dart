@@ -239,6 +239,8 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
     );
   }
 
+//------------------- Functions -------------------\\
+
   void _setFileName(String name) {
     fileNameController.text = name;
     setState(() {
@@ -281,6 +283,7 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
     setState(() {
       isLoadingFile = true;
     });
+
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -300,10 +303,10 @@ class _AddInvoicePageState extends State<AddInvoicePage> {
       _setFileName(file.name);
 
       _setFileBytes(file.bytes!);
-      setState(() {
-        isLoadingFile = false;
-      });
     }
+    setState(() {
+      isLoadingFile = false;
+    });
   }
 
   Future<void> _addInvoice() async {
