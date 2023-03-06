@@ -2,7 +2,9 @@
 
 A Flutter app for storing invoices. 
 
-## Introduction & main goals
+## Project overview
+
+### Introduction
 
 Welcome to MyInvoices, a simple invoice management app! The app is designed for storing, and managing invoices. The app also allows for easy uploading of PDF invoices, simply select the file from your device and it will be securely stored within the app for quick and convenient access at any time.
 
@@ -12,7 +14,21 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 - Firebase Storage
 - Firestore Database
 
-## App preview
+### Instructions
+
+To get started with the app, create an account using your email address. Once you're logged in, navigate to the "Add Invoice" page and fill in all the required fields. Don't forget to choose a PDF file from your phone's storage! You can view all of your saved invoices on the "Invoice List" page. From here you can continue to the invoice details where the details and PDF file can be previewd and updated. If ever the Invoice is no longer needed it can be delted from the "Invoice List" page.
+
+### Project status
+
+The app is currently under developement, it will be soon avaible on the App Store & Google Play.
+Testflight can be shared upon request.
+
+### Contact information
+
+[flutterdog.com](https://flutterdog.com)
+[Email me](mailto:filip.doganowski@gmail.com)
+
+## App preview screenshots
 
 ### Home Page:
 <img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/HomePage.png"  width=25% height=50%>
@@ -38,7 +54,7 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 ### Edit Invoice Page:
 <img src="https://github.com/fildogan/AppScreenshots/raw/main/MyInvoices/1.1.1/EditInvoicePage.png"  width=25% height=50%>
 
-### Packages licenses:
+## Packages Used and Their Licenses:
 
 [cupertino_icons](https://pub.dev/packages/cupertino_icons/license), 
 [firebase_core](https://pub.dev/packages/firebase_core/license), 
