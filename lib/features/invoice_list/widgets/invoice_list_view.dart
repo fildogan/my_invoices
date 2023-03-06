@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/app/core/enums.dart';
-import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/invoice_list/widgets/invoice_list_tile.dart';
+import 'package:my_invoices/app/core/enums.dart';
+import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/features/invoice_list/widgets/invoice_list_tile.dart';
 
 class InvoiceListView extends StatelessWidget {
   const InvoiceListView({

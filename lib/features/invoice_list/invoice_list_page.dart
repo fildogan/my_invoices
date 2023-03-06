@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/app/core/enums.dart';
-import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/global_widgets/background_faded.dart';
-import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
-import 'package:moje_faktury/features/invoice_list/widgets/empty_list_screen.dart';
-import 'package:moje_faktury/features/invoice_list/widgets/invoice_list_view.dart';
-import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:my_invoices/app/core/enums.dart';
+import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/features/global_widgets/background_faded.dart';
+import 'package:my_invoices/features/global_widgets/loading_screen.dart';
+import 'package:my_invoices/features/invoice_list/widgets/empty_list_screen.dart';
+import 'package:my_invoices/features/invoice_list/widgets/invoice_list_view.dart';
+import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 
 class InvoiceListPage extends StatefulWidget {
   const InvoiceListPage({super.key});

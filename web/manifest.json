@@ -1,6 +1,6 @@
 {
-    "name": "moje_faktury",
-    "short_name": "moje_faktury",
+    "name": "my_invoices",
+    "short_name": "my_invoices",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

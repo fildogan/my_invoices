@@ -1,6 +1,6 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});

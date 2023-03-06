@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
-import 'package:moje_faktury/features/global_widgets/background_full.dart';
-import 'package:moje_faktury/features/invoice_list/invoice_list_page.dart';
-import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:my_invoices/features/add_invoice/add_invoice_page.dart';
+import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/invoice_list/invoice_list_page.dart';
+import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({

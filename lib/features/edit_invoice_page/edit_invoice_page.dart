@@ -6,10 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/global_widgets/background_full.dart';
-import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
-import 'package:moje_faktury/utils/form_extensions.dart';
+import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/global_widgets/loading_screen.dart';
+import 'package:my_invoices/utils/form_extensions.dart';
 
 class EditInvoicePage extends StatefulWidget {
   const EditInvoicePage({

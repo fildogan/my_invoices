@@ -5,12 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moje_faktury/features/add_invoice/widgets/instructions_text.dart';
-import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
-import 'package:moje_faktury/features/global_widgets/background_full.dart';
-import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:my_invoices/features/add_invoice/widgets/instructions_text.dart';
+import 'package:my_invoices/features/global_widgets/loading_screen.dart';
+import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:moje_faktury/utils/form_extensions.dart';
+import 'package:my_invoices/utils/form_extensions.dart';
 
 class AddInvoicePage extends StatefulWidget {
   const AddInvoicePage({super.key});

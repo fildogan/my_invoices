@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/app/core/config.dart';
-import 'package:moje_faktury/features/auth/auth_gate.dart';
+import 'package:my_invoices/app/core/config.dart';
+import 'package:my_invoices/features/auth/auth_gate.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

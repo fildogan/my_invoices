@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/invoice_details/invoice_details_page.dart';
+import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/features/invoice_details/invoice_details_page.dart';
 
 class InvoiceTile extends StatelessWidget {
   const InvoiceTile({

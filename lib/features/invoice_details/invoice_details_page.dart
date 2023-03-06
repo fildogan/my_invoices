@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/api/pdf_api.dart';
-import 'package:moje_faktury/domain/models/invoice_model.dart';
-import 'package:moje_faktury/features/edit_invoice_page/edit_invoice_page.dart';
-import 'package:moje_faktury/features/global_widgets/background_full.dart';
-import 'package:moje_faktury/features/global_widgets/loading_screen.dart';
-import 'package:moje_faktury/features/invoice_details/widgets/my_text_form_field.dart';
-import 'package:moje_faktury/features/pdf_viewer/pdf_viewer_page.dart';
+import 'package:my_invoices/api/pdf_api.dart';
+import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/features/edit_invoice_page/edit_invoice_page.dart';
+import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/global_widgets/loading_screen.dart';
+import 'package:my_invoices/features/invoice_details/widgets/my_text_form_field.dart';
+import 'package:my_invoices/features/pdf_viewer/pdf_viewer_page.dart';
 
 class InvoiceDetailsPage extends StatefulWidget {
   const InvoiceDetailsPage({

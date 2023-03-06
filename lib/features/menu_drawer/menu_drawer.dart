@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/app/core/config.dart';
-import 'package:moje_faktury/features/add_invoice/add_invoice_page.dart';
-import 'package:moje_faktury/features/auth/user_profile.dart';
-import 'package:moje_faktury/features/home_page/home_page.dart';
-import 'package:moje_faktury/features/invoice_list/invoice_list_page.dart';
-import 'package:moje_faktury/features/settings_page/settings_page.dart';
+import 'package:my_invoices/app/core/config.dart';
+import 'package:my_invoices/features/add_invoice/add_invoice_page.dart';
+import 'package:my_invoices/features/auth/user_profile.dart';
+import 'package:my_invoices/features/home_page/home_page.dart';
+import 'package:my_invoices/features/invoice_list/invoice_list_page.dart';
+import 'package:my_invoices/features/settings_page/settings_page.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({

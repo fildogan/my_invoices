@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moje_faktury/features/global_widgets/background_full.dart';
-import 'package:moje_faktury/features/menu_drawer/menu_drawer.dart';
+import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-package com.filipdoganowski.moje_faktury
+package com.filipdoganowski.my_invoices
 
 import io.flutter.embedding.android.FlutterActivity
 
