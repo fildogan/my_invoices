@@ -14,7 +14,7 @@ Welcome to MyInvoices, a simple invoice management app! The app is designed for 
 - Firebase Storage
 - Firestore Database
 
-### Instructions
+### Use instructions
 
 To get started with the app, create an account using your email address. Once you're logged in, navigate to the "Add Invoice" page and fill in all the required fields. Don't forget to choose a PDF file from your phone's storage! You can view all of your saved invoices on the "Invoice List" page. From here you can continue to the invoice details where the details and PDF file can be previewd and updated. If ever the Invoice is no longer needed it can be delted from the "Invoice List" page.
 
@@ -25,7 +25,7 @@ Testflight can be shared upon request.
 
 ### Contact information
 
-[flutterdog.com](https://flutterdog.com)
+[flutterdog.com](https://flutterdog.com)/n
 [Email me](mailto:filip.doganowski@gmail.com)
 
 ## App preview screenshots
