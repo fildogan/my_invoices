@@ -25,7 +25,7 @@ Testflight can be shared upon request.
 
 ### Contact information
 
-[flutterdog.com](https://flutterdog.com)/n
+[flutterdog.com](https://flutterdog.com)<br />
 [Email me](mailto:filip.doganowski@gmail.com)
 
 ## App preview screenshots
