@@ -20,3 +20,9 @@ enum SortDirection {
   ascending,
   descending,
 }
+
+enum SelectedTheme {
+  dark,
+  light,
+  system,
+}
