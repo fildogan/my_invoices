@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_invoices/app/core/config.dart';
 
 class BackgroundFaded extends StatelessWidget {
   const BackgroundFaded({
@@ -8,14 +9,19 @@ class BackgroundFaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: currentTheme.currentTheme == ThemeMode.light
+          ? Colors.white
+          : Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Image.asset(
-            'assets/images/background1.jpg',
-            opacity: const AlwaysStoppedAnimation(.3),
-          ),
+          currentTheme.currentTheme == ThemeMode.light
+              ? Image.asset(
+                  'assets/images/background1.jpg',
+                  width: double.infinity,
+                  opacity: const AlwaysStoppedAnimation(.2),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );
