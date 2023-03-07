@@ -71,7 +71,8 @@ Testflight can be shared upon request.
 [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons/license), 
 [package_info_plus](https://pub.dev/packages/package_info_plus/license), 
 [build_runner](https://pub.dev/packages/build_runner/license), 
-[freezed](https://pub.dev/packages/freezed/license)
+[freezed](https://pub.dev/packages/freezed/license),
+[toggle_switch](https://pub.dev/packages/toggle_switch/license)
 
 
 
