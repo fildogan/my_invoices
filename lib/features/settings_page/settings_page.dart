@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_invoices/features/global_widgets/background_full.dart';
 import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+import 'package:my_invoices/app/theme.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({
@@ -47,18 +49,48 @@ class _SettingsPageState extends State<SettingsPage> {
           const BackgroundFullColor(),
           SafeArea(
             child: Center(
+              child: Column(children: [
+                const Spacer(
+                  flex: 1,
+                ),
+                Image.asset(
+                  'assets/images/my_invoices_logo.png',
+                  opacity: const AlwaysStoppedAnimation(.3),
+                  height: 200,
+                ),
+                const Spacer(
+                  flex: 3,
+                ),
+              ]),
+            ),
+          ),
+          SafeArea(
+            child: Center(
               child: Column(
                 children: [
-                  const Spacer(
-                    flex: 2,
+                  const SizedBox(
+                    height: 10,
                   ),
-                  Image.asset(
-                    'assets/images/my_invoices_logo.png',
-                    opacity: const AlwaysStoppedAnimation(.3),
-                    height: 200,
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Theme: '),
+                        ToggleSwitch(
+                          initialLabelIndex: MyTheme().index,
+                          cornerRadius: 4,
+                          totalSwitches: 3,
+                          labels: const ['Light', 'Dark', 'System'],
+                          onToggle: (index) {
+                            MyTheme().switchTheme(index!);
+                          },
+                        )
+                      ],
+                    ),
                   ),
                   const Spacer(
-                    flex: 2,
+                    flex: 6,
                   ),
                   const Text(
                     'Designed & Developed by:',
@@ -66,14 +98,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const Text(
                     'Filip Doganowski',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'for:',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'SSC MASTER',
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
