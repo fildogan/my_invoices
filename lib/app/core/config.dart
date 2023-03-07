@@ -1,3 +1,5 @@
+import 'package:my_invoices/app/theme.dart';
+
 enum Flavor {
   development,
   staging,
@@ -29,3 +31,5 @@ class Config {
     }
   }
 }
+
+MyTheme currentTheme = MyTheme();
