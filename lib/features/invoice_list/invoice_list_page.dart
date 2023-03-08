@@ -27,7 +27,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
         title: const Text('Invoices'),
         actions: [
           IconButton(
-              onPressed: _showSortDialog,
+              onPressed: showSortDialog,
               icon: const Icon(
                 Icons.sort,
               ))
@@ -61,7 +61,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
     );
   }
 
-  Future<void> _showSortDialog() async {
+  Future<void> showSortDialog() async {
     return await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -76,61 +76,27 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                 // mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RadioListTile(
-                    toggleable: true,
-                    value: SelectedSort.title,
-                    groupValue: selectedSort,
-                    title: const Text('Title'),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSort = value!;
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    toggleable: true,
-                    value: SelectedSort.contrahent,
-                    groupValue: selectedSort,
-                    title: const Text('Contrahent'),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSort = value!;
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    toggleable: true,
-                    value: SelectedSort.net,
-                    groupValue: selectedSort,
-                    title: const Text('Net Value'),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSort = value!;
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    toggleable: true,
-                    value: SelectedSort.gross,
-                    groupValue: selectedSort,
-                    title: const Text('Gross Value'),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSort = value!;
-                      });
-                    },
-                  ),
+                  selectedSortRadioTile(
+                      setState: setState,
+                      value: SelectedSort.title,
+                      title: 'Title'),
+                  selectedSortRadioTile(
+                      setState: setState,
+                      value: SelectedSort.contrahent,
+                      title: 'Contrahent'),
+                  selectedSortRadioTile(
+                      setState: setState,
+                      value: SelectedSort.net,
+                      title: 'Net Value'),
+                  selectedSortRadioTile(
+                      setState: setState,
+                      value: SelectedSort.gross,
+                      title: 'Gross Value'),
                   const Divider(),
-                  RadioListTile<SortDirection>(
-                    toggleable: true,
+                  sortDirectionRadioTile(
+                    setState: setState,
                     value: SortDirection.ascending,
-                    groupValue: ascending,
-                    title: const Text('Ascending'),
-                    onChanged: (SortDirection? value) {
-                      setState(() {
-                        ascending = value!;
-                      });
-                    },
+                    title: 'Ascending',
                   ),
                   RadioListTile<SortDirection>(
                     toggleable: true,
@@ -185,6 +151,42 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
             ),
           ],
         );
+      },
+    );
+  }
+
+  RadioListTile<SortDirection> sortDirectionRadioTile({
+    required StateSetter setState,
+    required SortDirection value,
+    required String title,
+  }) {
+    return RadioListTile<SortDirection>(
+      toggleable: true,
+      value: SortDirection.ascending,
+      groupValue: ascending,
+      title: const Text('Ascending'),
+      onChanged: (SortDirection? value) {
+        setState(() {
+          ascending = value!;
+        });
+      },
+    );
+  }
+
+  RadioListTile<SelectedSort> selectedSortRadioTile({
+    required StateSetter setState,
+    required SelectedSort value,
+    required String title,
+  }) {
+    return RadioListTile(
+      toggleable: true,
+      value: value,
+      groupValue: selectedSort,
+      title: Text(title),
+      onChanged: (value) {
+        setState(() {
+          selectedSort = value!;
+        });
       },
     );
   }
