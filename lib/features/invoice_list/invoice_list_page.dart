@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_invoices/app/core/enums.dart';
 import 'package:my_invoices/domain/models/invoice_model.dart';
+import 'package:my_invoices/domain/repositories/invoice_repository.dart';
 import 'package:my_invoices/features/global_widgets/background_faded.dart';
 import 'package:my_invoices/features/global_widgets/loading_screen.dart';
 import 'package:my_invoices/features/invoice_list/widgets/empty_list_screen.dart';
@@ -23,10 +22,6 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Invoices'),
@@ -43,13 +38,8 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
         children: [
           const BackgroundFaded(),
           SafeArea(
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(userID)
-                  .collection('invoices')
-                  .orderBy('title')
-                  .snapshots(),
+            child: StreamBuilder<List<InvoiceModel>>(
+              stream: InvoiceRepository().getInvoiceStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(child: Text('Something went wrong'));
@@ -58,24 +48,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                   return const LoadingScreen(
                       'Please wait, loading invoices...');
                 }
-                final invoices = snapshot.data!.docs.map(
-                  (doc) {
-                    return InvoiceModel(
-                      id: doc.id,
-                      title: doc['title'].toString(),
-                      contrahent: doc['contrahent'].toString(),
-                      net: doc.data().toString().contains('net')
-                          ? double.parse(doc['net'].toString())
-                          : 0.00,
-                      vat: doc.data().toString().contains('vat')
-                          ? int.parse(doc['vat'].toString())
-                          : 0,
-                      gross: doc['gross'].toString(),
-                      fileName: doc['file_name'].toString(),
-                      isFileAttached: doc['is_file_attached'],
-                    );
-                  },
-                ).toList();
+                final invoices = snapshot.data!;
                 if (invoices.isEmpty) {
                   return const ListEmpty();
                 }
