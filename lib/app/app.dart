@@ -27,7 +27,18 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: false,
         primarySwatch: Colors.orange,
       ),
-      darkTheme: ThemeData.dark(useMaterial3: false),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          useMaterial3: false,
+          primarySwatch: Colors.orange,
+          primaryColor: Colors.orange,
+          appBarTheme: const AppBarTheme(
+            foregroundColor: Colors.black,
+            // systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.orange,
+          )
+          // .copyWith(backgroundColor: Colors.orange),
+          ),
       themeMode: currentTheme.currentTheme,
       home: const AuthGate(),
     );
