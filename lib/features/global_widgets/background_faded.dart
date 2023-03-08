@@ -10,26 +10,23 @@ class BackgroundFaded extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          color: Theme.of(context).brightness == Brightness.light
-              ? Colors.white
-              : Colors.transparent,
+          color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Theme.of(context).brightness == Brightness.light
-                  ? Image.asset(
-                      'assets/images/background1.jpg',
-                      width: double.infinity,
-                      opacity: const AlwaysStoppedAnimation(.2),
-                    )
-                  : const SizedBox.shrink(),
+              Image.asset(
+                'assets/images/background1.jpg',
+                width: double.infinity,
+                opacity: const AlwaysStoppedAnimation(.4),
+              ),
             ],
           ),
         ),
-        if (Theme.of(context).brightness == Brightness.light)
-          Container(
-            color: Colors.grey.withOpacity(0.2),
-          ),
+        Container(
+          color: Theme.of(context).brightness == Brightness.light
+              ? Colors.grey.withOpacity(0.2)
+              : Colors.black.withOpacity(0.8),
+        ),
       ],
     );
   }
