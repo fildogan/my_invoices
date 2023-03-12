@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_invoices/app/core/config.dart';
+import 'package:my_invoices/features/about_page/about_page.dart';
 import 'package:my_invoices/features/add_invoice/add_invoice_page.dart';
 import 'package:my_invoices/features/auth/user_profile.dart';
 import 'package:my_invoices/features/home_page/home_page.dart';
@@ -23,12 +23,16 @@ class MenuDrawer extends StatelessWidget {
                 SizedBox(
                   height: 200,
                   child: DrawerHeader(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage(
+                              image: const AssetImage(
                                 'assets/images/background1.jpg',
-                              ))),
+                              ),
+                              opacity: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? 1
+                                  : 0.7)),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
                       child: Row(
@@ -118,6 +122,21 @@ class MenuDrawer extends StatelessWidget {
                         builder: (context) => const SettingsPage()));
                   },
                 ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.info_outline,
+                    size: 24,
+                  ),
+                  title: const Text(
+                    'About',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AboutPage()));
+                  },
+                ),
               ],
             ),
           ),
@@ -125,8 +144,8 @@ class MenuDrawer extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
-                children: [
-                  Text(Config.versionMessage),
+                children: const [
+                  Text('My Invoices by flutterdog.com'),
                 ],
               ),
             ),
