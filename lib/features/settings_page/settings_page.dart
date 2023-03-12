@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_invoices/features/global_widgets/background_full.dart';
+import 'package:my_invoices/features/global_widgets/row_button.dart';
 import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -71,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const SettingsRow(
+                  const RowButton(
                     text: 'Theme: ',
                     child: ThemeToggleSwitch(),
                   ),
@@ -101,24 +102,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SettingsRow extends StatelessWidget {
-  const SettingsRow({super.key, required this.text, required this.child});
-
-  final String text;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text(text), const ThemeToggleSwitch()],
       ),
     );
   }
