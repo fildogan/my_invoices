@@ -72,7 +72,9 @@ Testflight can be shared upon request.
 [package_info_plus](https://pub.dev/packages/package_info_plus/license), 
 [build_runner](https://pub.dev/packages/build_runner/license), 
 [freezed](https://pub.dev/packages/freezed/license),
-[toggle_switch](https://pub.dev/packages/toggle_switch/license)
+[toggle_switch](https://pub.dev/packages/toggle_switch/license),
+[url_launcher](https://pub.dev/packages/url_launcher/license)
+
 
 
 
