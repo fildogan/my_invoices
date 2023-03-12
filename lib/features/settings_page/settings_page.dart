@@ -71,23 +71,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Theme: '),
-                        ToggleSwitch(
-                          initialLabelIndex: MyTheme().index,
-                          cornerRadius: 4,
-                          totalSwitches: 3,
-                          labels: const ['Light', 'Dark', 'System'],
-                          onToggle: (index) {
-                            MyTheme().switchTheme(index!);
-                          },
-                        )
-                      ],
-                    ),
+                  const SettingsRow(
+                    text: 'Theme: ',
+                    child: ThemeToggleSwitch(),
                   ),
                   const Spacer(
                     flex: 6,
@@ -116,6 +102,43 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SettingsRow extends StatelessWidget {
+  const SettingsRow({super.key, required this.text, required this.child});
+
+  final String text;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(text), const ThemeToggleSwitch()],
+      ),
+    );
+  }
+}
+
+class ThemeToggleSwitch extends StatelessWidget {
+  const ThemeToggleSwitch({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleSwitch(
+      initialLabelIndex: MyTheme().index,
+      cornerRadius: 4,
+      totalSwitches: 3,
+      labels: const ['Light', 'Dark', 'System'],
+      onToggle: (index) {
+        MyTheme().switchTheme(index!);
+      },
     );
   }
 }
