@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_invoices/app/core/enums.dart';
+import 'package:my_invoices/app/core/preferences_service.dart';
 
 class MyTheme with ChangeNotifier {
   SelectedTheme _selectedTheme = SelectedTheme.system;
@@ -34,15 +35,18 @@ class MyTheme with ChangeNotifier {
     switch (index) {
       case 0:
         selectedTheme = SelectedTheme.light;
+        PreferencesService().saveTheme(SelectedTheme.light);
         notifyListeners();
         break;
 
       case 1:
         selectedTheme = SelectedTheme.dark;
+        PreferencesService().saveTheme(SelectedTheme.dark);
         notifyListeners();
         break;
       case 2:
         selectedTheme = SelectedTheme.system;
+        PreferencesService().saveTheme(SelectedTheme.system);
         notifyListeners();
         break;
     }
