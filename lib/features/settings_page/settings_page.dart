@@ -3,8 +3,7 @@ import 'package:my_invoices/features/global_widgets/app_developer_info.dart';
 import 'package:my_invoices/features/global_widgets/background_full.dart';
 import 'package:my_invoices/features/global_widgets/row_button.dart';
 import 'package:my_invoices/features/menu_drawer/menu_drawer.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:my_invoices/app/theme.dart';
+import 'package:my_invoices/features/settings_page/theme_toggle_switch.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({
@@ -56,25 +55,6 @@ class SettingsPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ThemeToggleSwitch extends StatelessWidget {
-  const ThemeToggleSwitch({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ToggleSwitch(
-      initialLabelIndex: MyTheme().index,
-      cornerRadius: 4,
-      totalSwitches: 3,
-      labels: const ['Light', 'Dark', 'System'],
-      onToggle: (index) {
-        MyTheme().switchTheme(index!);
-      },
     );
   }
 }
