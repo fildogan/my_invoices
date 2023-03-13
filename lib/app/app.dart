@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_invoices/app/core/config.dart';
+import 'package:my_invoices/app/core/preferences_service.dart';
 import 'package:my_invoices/features/auth/auth_gate.dart';
 
 class MyApp extends StatefulWidget {
@@ -12,6 +13,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    PreferencesService().getTheme().then((selectedTheme) {
+      currentTheme.selectedTheme = selectedTheme;
+    });
     super.initState();
     currentTheme.addListener(() {
       setState(() {});
